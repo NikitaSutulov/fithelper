@@ -16,9 +16,12 @@ export class UserService {
     private readonly usersRepo: Repository<User>
   ) {}
 
-  async create(dto: CreateUserDto): Promise<User> {
-    await this.ensureUsernameAndEmailAvailable(dto.username, dto.email);
-    const newUser = this.usersRepo.create(dto);
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    await this.ensureUsernameAndEmailAvailable(
+      createUserDto.username,
+      createUserDto.email
+    );
+    const newUser = this.usersRepo.create(createUserDto);
     newUser.password = await this.hashPassword(newUser.password);
     return this.usersRepo.save(newUser);
   }
@@ -39,13 +42,18 @@ export class UserService {
     return this.usersRepo.find();
   }
 
-  async edit(id: string, dto: UpdateUserDto): Promise<User> {
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     const userToEdit = await this.usersRepo.findOneBy({ id });
     if (!userToEdit) {
       throw new NotFoundException('User not found');
     }
-    await this.ensureUsernameAndEmailAvailable(dto.username, dto.email, id);
-    const updatedUser = Object.assign(userToEdit, dto);
+    if (updateUserDto.username) {
+      await this.ensureUsernameAvailable(updateUserDto.username, id);
+    }
+    if (updateUserDto.email) {
+      await this.ensureEmailAvailable(updateUserDto.email, id);
+    }
+    const updatedUser = Object.assign(userToEdit, updateUserDto);
     updatedUser.password = await this.hashPassword(updatedUser.password);
     return this.usersRepo.save(updatedUser);
   }
@@ -64,12 +72,26 @@ export class UserService {
     email: string,
     userId?: string
   ): Promise<void> {
+    await this.ensureUsernameAvailable(username, userId);
+    await this.ensureEmailAvailable(email, userId);
+  }
+
+  private async ensureUsernameAvailable(
+    username: string,
+    userId?: string
+  ): Promise<void> {
     const userWithTheSameUsername = await this.findByUsername(username);
     if (userWithTheSameUsername && userWithTheSameUsername.id !== userId) {
       throw new BadRequestException(
         'Another user with the same username already exists'
       );
     }
+  }
+
+  private async ensureEmailAvailable(
+    email: string,
+    userId?: string
+  ): Promise<void> {
     const userWithTheSameEmail = await this.findByEmail(email);
     if (userWithTheSameEmail && userWithTheSameEmail.id !== userId) {
       throw new BadRequestException(

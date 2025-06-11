@@ -6,8 +6,8 @@ import {
   NotFoundException,
   Param,
   ParseUUIDPipe,
+  Patch,
   Post,
-  Put,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto, UpdateUserDto } from './dto';
@@ -30,14 +30,14 @@ export class UserController {
     return user;
   }
 
-  @Post('create')
-  create(@Body() dto: CreateUserDto) {
-    return this.userService.create(dto);
+  @Post()
+  create(@Body() createUserDto: CreateUserDto) {
+    return this.userService.create(createUserDto);
   }
 
-  @Put('/:id')
-  edit(@Param('id') id: string, @Body() dto: UpdateUserDto) {
-    return this.userService.edit(id, dto);
+  @Patch('/:id')
+  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    return this.userService.update(id, updateUserDto);
   }
 
   @Delete('/:id')
