@@ -1,5 +1,6 @@
 import { Check, Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
+import { Exclude } from 'class-transformer';
 
 @Entity('users')
 @Unique(['username'])
@@ -18,7 +19,7 @@ export class User {
   @Column()
   email: string;
 
-  @ApiProperty({ example: '$tr0nG_Passw0rd' })
+  @Exclude()
   @Column()
   password: string;
 
