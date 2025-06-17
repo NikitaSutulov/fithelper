@@ -8,6 +8,8 @@ import { AuthModule } from './auth/auth.module';
 import { User } from './user/entities/user.entity';
 import { MuscleModule } from './muscle/muscle.module';
 import { Muscle } from './muscle/entities/muscle.entity';
+import { ExerciseModule } from './exercise/exercise.module';
+import { Exercise } from './exercise/entities/exercise.entity';
 
 @Module({
   imports: [
@@ -22,13 +24,14 @@ import { Muscle } from './muscle/entities/muscle.entity';
         username: config.get('DB_USERNAME'),
         password: config.get('DB_PASSWORD'),
         database: config.get('DB_NAME'),
-        entities: [User, Muscle],
+        entities: [User, Muscle, Exercise],
         synchronize: true,
       }),
     }),
     UserModule,
     AuthModule,
     MuscleModule,
+    ExerciseModule,
   ],
   controllers: [AppController],
   providers: [AppService],

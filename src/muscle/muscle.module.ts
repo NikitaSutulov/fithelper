@@ -8,5 +8,6 @@ import { Muscle } from './entities/muscle.entity';
   imports: [TypeOrmModule.forFeature([Muscle])],
   controllers: [MuscleController],
   providers: [MuscleService],
+  exports: [MuscleService],
 })
 export class MuscleModule {}
