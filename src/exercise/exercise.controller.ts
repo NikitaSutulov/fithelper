@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { ExerciseService } from './exercise.service';
 import { AddMuscleDto, CreateExerciseDto, UpdateExerciseDto } from './dto';
-import { ApiBody, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { Exercise } from './entities/exercise.entity';
 
 @Controller('exercise')
@@ -76,7 +76,6 @@ export class ExerciseController {
     status: HttpStatus.NOT_FOUND,
     description: 'Exercise not found',
   })
-  @ApiBody({ type: UpdateExerciseDto })
   update(
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() updateExerciseDto: UpdateExerciseDto
