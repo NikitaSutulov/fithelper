@@ -36,8 +36,9 @@ export class CreateUserDto {
   @IsIn(['female', 'male'])
   gender: string;
 
-  @ApiProperty({ example: null })
+  @ApiProperty({ example: 175 })
   @IsInt()
+  @IsNotEmpty()
   @Min(1)
   height: number;
 }
