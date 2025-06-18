@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
-import { LoginDto } from './dto';
+import { LoginDto, LoginResponseDto } from './dto';
 import { compare } from 'bcrypt';
 import { CreateUserDto } from 'src/user/dto';
 import { JwtService } from '@nestjs/jwt';
@@ -16,7 +16,7 @@ export class AuthService {
     private readonly jwtService: JwtService
   ) {}
 
-  async login(dto: LoginDto) {
+  async login(dto: LoginDto): Promise<LoginResponseDto> {
     const { username, password } = dto;
     const user = await this.userService.findByUsername(username);
     if (!user) {
@@ -28,7 +28,7 @@ export class AuthService {
     }
     const payload = { sub: user.id, username: user.username };
     return {
-      access_token: await this.jwtService.signAsync(payload),
+      accessToken: await this.jwtService.signAsync(payload),
     };
   }
 
