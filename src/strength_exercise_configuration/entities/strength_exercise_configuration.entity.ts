@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exercise } from 'src/exercise/entities/exercise.entity';
-import { Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { ExerciseSet } from 'src/exercise_set/entities/exercise_set.entity';
+import { Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('strength_exercise_configurations')
 export class StrengthExerciseConfiguration {
@@ -11,4 +12,8 @@ export class StrengthExerciseConfiguration {
   @ApiProperty({ type: Exercise })
   @ManyToOne(() => Exercise)
   exercise: Exercise;
+
+  @ApiProperty({ isArray: true, type: ExerciseSet })
+  @OneToMany(() => ExerciseSet, (set) => set.strengthExerciseConfiguration)
+  sets: ExerciseSet[];
 }

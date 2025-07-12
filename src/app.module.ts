@@ -14,6 +14,8 @@ import { StrengthExerciseConfigurationModule } from './strength_exercise_configu
 import { StrengthExerciseConfiguration } from './strength_exercise_configuration/entities/strength_exercise_configuration.entity';
 import { CardioExerciseConfigurationModule } from './cardio_exercise_configuration/cardio_exercise_configuration.module';
 import { CardioExerciseConfiguration } from './cardio_exercise_configuration/entities/cardio_exercise_configuration.entity';
+import { ExerciseSetModule } from './exercise_set/exercise_set.module';
+import { ExerciseSet } from './exercise_set/entities/exercise_set.entity';
 
 @Module({
   imports: [
@@ -34,6 +36,7 @@ import { CardioExerciseConfiguration } from './cardio_exercise_configuration/ent
           Exercise,
           StrengthExerciseConfiguration,
           CardioExerciseConfiguration,
+          ExerciseSet,
         ],
         synchronize: true,
       }),
@@ -44,6 +47,7 @@ import { CardioExerciseConfiguration } from './cardio_exercise_configuration/ent
     ExerciseModule,
     StrengthExerciseConfigurationModule,
     CardioExerciseConfigurationModule,
+    ExerciseSetModule,
   ],
   controllers: [AppController],
   providers: [AppService],

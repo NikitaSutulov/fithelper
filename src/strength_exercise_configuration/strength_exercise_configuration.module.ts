@@ -12,5 +12,6 @@ import { StrengthExerciseConfiguration } from './entities/strength_exercise_conf
   ],
   controllers: [StrengthExerciseConfigurationController],
   providers: [StrengthExerciseConfigurationService],
+  exports: [StrengthExerciseConfigurationService],
 })
 export class StrengthExerciseConfigurationModule {}

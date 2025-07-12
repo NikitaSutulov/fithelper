@@ -34,14 +34,14 @@ export class StrengthExerciseConfigurationService {
 
   async findAll(): Promise<StrengthExerciseConfiguration[]> {
     return this.strengthExerciseConfigurationsRepo.find({
-      relations: ['exercise'],
+      relations: ['exercise', 'sets'],
     });
   }
 
   async findById(id: string): Promise<StrengthExerciseConfiguration | null> {
     return this.strengthExerciseConfigurationsRepo.findOne({
       where: { id },
-      relations: ['exercise'],
+      relations: ['exercise', 'sets'],
     });
   }
 
