@@ -12,6 +12,8 @@ import { ExerciseModule } from './exercise/exercise.module';
 import { Exercise } from './exercise/entities/exercise.entity';
 import { StrengthExerciseConfigurationModule } from './strength_exercise_configuration/strength_exercise_configuration.module';
 import { StrengthExerciseConfiguration } from './strength_exercise_configuration/entities/strength_exercise_configuration.entity';
+import { CardioExerciseConfigurationModule } from './cardio_exercise_configuration/cardio_exercise_configuration.module';
+import { CardioExerciseConfiguration } from './cardio_exercise_configuration/entities/cardio_exercise_configuration.entity';
 
 @Module({
   imports: [
@@ -26,7 +28,13 @@ import { StrengthExerciseConfiguration } from './strength_exercise_configuration
         username: config.get('DB_USERNAME'),
         password: config.get('DB_PASSWORD'),
         database: config.get('DB_NAME'),
-        entities: [User, Muscle, Exercise, StrengthExerciseConfiguration],
+        entities: [
+          User,
+          Muscle,
+          Exercise,
+          StrengthExerciseConfiguration,
+          CardioExerciseConfiguration,
+        ],
         synchronize: true,
       }),
     }),
@@ -35,6 +43,7 @@ import { StrengthExerciseConfiguration } from './strength_exercise_configuration
     MuscleModule,
     ExerciseModule,
     StrengthExerciseConfigurationModule,
+    CardioExerciseConfigurationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

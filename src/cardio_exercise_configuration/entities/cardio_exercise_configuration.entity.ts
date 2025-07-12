@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exercise } from 'src/exercise/entities/exercise.entity';
-import { Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('strength_exercise_configurations')
-export class StrengthExerciseConfiguration {
+@Entity('cardio_exercise_configurations')
+export class CardioExerciseConfiguration {
   @ApiProperty({ example: '00000000-0000-0000-0000-000000000000' })
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -11,4 +11,8 @@ export class StrengthExerciseConfiguration {
   @ApiProperty({ type: Exercise })
   @ManyToOne(() => Exercise)
   exercise: Exercise;
+
+  @ApiProperty({ example: 600 })
+  @Column()
+  time: number;
 }
