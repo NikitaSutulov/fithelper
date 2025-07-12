@@ -9,5 +9,6 @@ import { MuscleModule } from 'src/muscle/muscle.module';
   imports: [TypeOrmModule.forFeature([Exercise]), MuscleModule],
   controllers: [ExerciseController],
   providers: [ExerciseService],
+  exports: [ExerciseService],
 })
 export class ExerciseModule {}
