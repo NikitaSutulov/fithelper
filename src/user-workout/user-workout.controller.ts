@@ -26,6 +26,14 @@ export class UserWorkoutController {
     type: UserWorkout,
   })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: 'Access denied: Private workout of another user',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'User or workout not found',
+  })
   create(@Body() createUserWorkoutDto: CreateUserWorkoutDto) {
     return this.userWorkoutService.create(createUserWorkoutDto);
   }
@@ -69,7 +77,7 @@ export class UserWorkoutController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'Workout not found',
+    description: 'User workout not found',
   })
   async findById(@Param('id', new ParseUUIDPipe()) id: string) {
     const userWorkout = await this.userWorkoutService.findById(id);
@@ -89,7 +97,7 @@ export class UserWorkoutController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'Workout not found',
+    description: 'User workout not found',
   })
   delete(@Param('id', new ParseUUIDPipe()) id: string) {
     return this.userWorkoutService.delete(id);
