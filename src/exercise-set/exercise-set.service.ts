@@ -83,7 +83,7 @@ export class ExerciseSetService {
     return this.exerciseSetsRepo.save(updatedExerciseSet);
   }
 
-  async delete(id: string) {
+  async delete(id: string): Promise<ExerciseSet> {
     const exerciseSetToDelete = await this.findById(id);
     if (!exerciseSetToDelete) {
       throw new NotFoundException('Exercise set not found');

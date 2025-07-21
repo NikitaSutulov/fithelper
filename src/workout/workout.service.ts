@@ -51,7 +51,7 @@ export class WorkoutService {
     return this.workoutsRepo.save(updatedWorkout);
   }
 
-  async delete(id: string) {
+  async delete(id: string): Promise<Workout> {
     const workoutToDelete = await this.findById(id);
     if (!workoutToDelete) {
       throw new NotFoundException('Workout not found');

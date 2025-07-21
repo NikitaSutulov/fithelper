@@ -33,7 +33,7 @@ export class MuscleService {
     return this.musclesRepo.save(updatedMuscle);
   }
 
-  async delete(id: string) {
+  async delete(id: string): Promise<Muscle> {
     const muscleToDelete = await this.findById(id);
     if (!muscleToDelete) {
       throw new NotFoundException('Muscle not found');

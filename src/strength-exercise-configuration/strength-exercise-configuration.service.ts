@@ -71,7 +71,7 @@ export class StrengthExerciseConfigurationService {
     );
   }
 
-  async delete(id: string) {
+  async delete(id: string): Promise<StrengthExerciseConfiguration> {
     const strengthExerciseConfigurationToDelete = await this.findById(id);
     if (!strengthExerciseConfigurationToDelete) {
       throw new NotFoundException('Strength exercise configuration not found');

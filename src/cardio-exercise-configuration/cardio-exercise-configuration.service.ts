@@ -73,7 +73,7 @@ export class CardioExerciseConfigurationService {
     );
   }
 
-  async delete(id: string) {
+  async delete(id: string): Promise<CardioExerciseConfiguration> {
     const cardioExerciseConfigurationToDelete = await this.findById(id);
     if (!cardioExerciseConfigurationToDelete) {
       throw new NotFoundException('Cardio exercise configuration not found');
