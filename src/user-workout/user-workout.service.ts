@@ -39,9 +39,9 @@ export class UserWorkoutService {
         'Access denied: Private workout of another user'
       );
     }
-    const existingUserWorkout = (await this.findByUserId(user.id)).filter(
+    const existingUserWorkout = (await this.findByUserId(user.id)).find(
       (uw) => uw.workout.id === workout.id
-    )[0];
+    );
     if (existingUserWorkout) {
       throw new BadRequestException(
         'A user workout for the given user and workout already exists'
