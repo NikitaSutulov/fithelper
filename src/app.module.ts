@@ -10,12 +10,12 @@ import { MuscleModule } from './muscle/muscle.module';
 import { Muscle } from './muscle/entities/muscle.entity';
 import { ExerciseModule } from './exercise/exercise.module';
 import { Exercise } from './exercise/entities/exercise.entity';
-import { StrengthExerciseConfigurationModule } from './strength_exercise_configuration/strength_exercise_configuration.module';
-import { StrengthExerciseConfiguration } from './strength_exercise_configuration/entities/strength_exercise_configuration.entity';
-import { CardioExerciseConfigurationModule } from './cardio_exercise_configuration/cardio_exercise_configuration.module';
-import { CardioExerciseConfiguration } from './cardio_exercise_configuration/entities/cardio_exercise_configuration.entity';
-import { ExerciseSetModule } from './exercise_set/exercise_set.module';
-import { ExerciseSet } from './exercise_set/entities/exercise_set.entity';
+import { StrengthExerciseConfigurationModule } from './strength-exercise-configuration/strength-exercise-configuration.module';
+import { StrengthExerciseConfiguration } from './strength-exercise-configuration/entities/strength-exercise-configuration.entity';
+import { CardioExerciseConfigurationModule } from './cardio-exercise-configuration/cardio-exercise-configuration.module';
+import { CardioExerciseConfiguration } from './cardio-exercise-configuration/entities/cardio-exercise-configuration.entity';
+import { ExerciseSetModule } from './exercise-set/exercise-set.module';
+import { ExerciseSet } from './exercise-set/entities/exercise-set.entity';
 import { WorkoutModule } from './workout/workout.module';
 import { Workout } from './workout/entities/workout.entity';
 
