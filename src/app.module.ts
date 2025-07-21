@@ -18,6 +18,8 @@ import { ExerciseSetModule } from './exercise-set/exercise-set.module';
 import { ExerciseSet } from './exercise-set/entities/exercise-set.entity';
 import { WorkoutModule } from './workout/workout.module';
 import { Workout } from './workout/entities/workout.entity';
+import { UserWorkoutModule } from './user-workout/user-workout.module';
+import { UserWorkout } from './user-workout/entities/user-workout.entity';
 
 @Module({
   imports: [
@@ -40,6 +42,7 @@ import { Workout } from './workout/entities/workout.entity';
           CardioExerciseConfiguration,
           ExerciseSet,
           Workout,
+          UserWorkout,
         ],
         synchronize: true,
       }),
@@ -52,6 +55,7 @@ import { Workout } from './workout/entities/workout.entity';
     CardioExerciseConfigurationModule,
     ExerciseSetModule,
     WorkoutModule,
+    UserWorkoutModule,
   ],
   controllers: [AppController],
   providers: [AppService],

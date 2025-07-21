@@ -7,6 +7,7 @@ import { UserModule } from 'src/user/user.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Workout]), UserModule],
+  exports: [WorkoutService],
   controllers: [WorkoutController],
   providers: [WorkoutService],
 })
