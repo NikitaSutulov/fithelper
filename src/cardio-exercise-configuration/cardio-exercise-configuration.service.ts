@@ -7,13 +7,15 @@ import {
   CreateCardioExerciseConfigurationDto,
   UpdateCardioExerciseConfigurationDto,
 } from './dto';
+import { WorkoutService } from 'src/workout/workout.service';
 
 @Injectable()
 export class CardioExerciseConfigurationService {
   constructor(
     @InjectRepository(CardioExerciseConfiguration)
     private readonly cardioExerciseConfigurationsRepo: Repository<CardioExerciseConfiguration>,
-    private readonly exerciseService: ExerciseService
+    private readonly exerciseService: ExerciseService,
+    private readonly workoutService: WorkoutService
   ) {}
 
   async create(
@@ -25,9 +27,15 @@ export class CardioExerciseConfigurationService {
     if (!exercise) {
       throw new NotFoundException('Exercise not found');
     }
+    const workout = await this.workoutService.findById(
+      createCardioExerciseConfigurationDto.workoutId
+    );
+    if (!workout) {
+      throw new NotFoundException('Workout not found');
+    }
     const time = createCardioExerciseConfigurationDto.time;
     const newCardioExerciseConfiguration =
-      this.cardioExerciseConfigurationsRepo.create({ exercise, time });
+      this.cardioExerciseConfigurationsRepo.create({ exercise, workout, time });
     return this.cardioExerciseConfigurationsRepo.save(
       newCardioExerciseConfiguration
     );
@@ -35,14 +43,14 @@ export class CardioExerciseConfigurationService {
 
   async findAll(): Promise<CardioExerciseConfiguration[]> {
     return this.cardioExerciseConfigurationsRepo.find({
-      relations: ['exercise'],
+      relations: ['exercise', 'workout'],
     });
   }
 
   async findById(id: string): Promise<CardioExerciseConfiguration | null> {
     return this.cardioExerciseConfigurationsRepo.findOne({
       where: { id },
-      relations: ['exercise'],
+      relations: ['exercise', 'workout'],
     });
   }
 
@@ -54,22 +62,10 @@ export class CardioExerciseConfigurationService {
     if (!cardioExerciseConfigurationToUpdate) {
       throw new NotFoundException('Cardio exercise configuration not found');
     }
-    if (!updateCardioExerciseConfigurationDto.exerciseId) {
-      return cardioExerciseConfigurationToUpdate;
-    }
-    const exercise = await this.exerciseService.findById(
-      updateCardioExerciseConfigurationDto.exerciseId
-    );
-    if (!exercise) {
-      throw new NotFoundException('Exercise not found');
-    }
-    const time = updateCardioExerciseConfigurationDto.time;
-    const updatedCardioExerciseConfiguration = Object.assign(
-      cardioExerciseConfigurationToUpdate,
-      { exercise, time }
-    );
+    cardioExerciseConfigurationToUpdate.time =
+      updateCardioExerciseConfigurationDto.time;
     return this.cardioExerciseConfigurationsRepo.save(
-      updatedCardioExerciseConfiguration
+      cardioExerciseConfigurationToUpdate
     );
   }
 

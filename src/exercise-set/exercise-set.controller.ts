@@ -5,10 +5,10 @@ import {
   Body,
   Param,
   Delete,
-  Patch,
   NotFoundException,
   ParseUUIDPipe,
   HttpStatus,
+  Put,
 } from '@nestjs/common';
 import { ExerciseSetService } from './exercise-set.service';
 import { CreateExerciseSetDto, UpdateExerciseSetDto } from './dto';
@@ -63,7 +63,7 @@ export class ExerciseSetController {
     return exerciseSet;
   }
 
-  @Patch(':id')
+  @Put(':id')
   @ApiOperation({ summary: 'Updates an exercise set with specified id' })
   @ApiParam({ name: 'id', required: true, description: 'Exercise set ID' })
   @ApiResponse({

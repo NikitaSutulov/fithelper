@@ -4,11 +4,13 @@ import { CardioExerciseConfigurationController } from './cardio-exercise-configu
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CardioExerciseConfiguration } from './entities/cardio-exercise-configuration.entity';
 import { ExerciseModule } from 'src/exercise/exercise.module';
+import { WorkoutModule } from 'src/workout/workout.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([CardioExerciseConfiguration]),
     ExerciseModule,
+    WorkoutModule,
   ],
   controllers: [CardioExerciseConfigurationController],
   providers: [CardioExerciseConfigurationService],

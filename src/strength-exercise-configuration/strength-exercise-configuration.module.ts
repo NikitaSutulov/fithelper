@@ -4,11 +4,13 @@ import { StrengthExerciseConfigurationController } from './strength-exercise-con
 import { ExerciseModule } from 'src/exercise/exercise.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { StrengthExerciseConfiguration } from './entities/strength-exercise-configuration.entity';
+import { WorkoutModule } from 'src/workout/workout.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([StrengthExerciseConfiguration]),
     ExerciseModule,
+    WorkoutModule,
   ],
   controllers: [StrengthExerciseConfigurationController],
   providers: [StrengthExerciseConfigurationService],

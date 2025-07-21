@@ -59,27 +59,10 @@ export class ExerciseSetService {
     if (!exerciseSetToUpdate) {
       throw new NotFoundException('Exercise set not found');
     }
-    if (!updateExerciseSetDto.strengthExerciseConfigurationId) {
-      const { weight, reps } = updateExerciseSetDto;
-      const updatedExerciseSet = Object.assign(exerciseSetToUpdate, {
-        weight,
-        reps,
-      });
-      return this.exerciseSetsRepo.save(updatedExerciseSet);
-    }
-    const strengthExerciseConfiguration =
-      await this.strengthExerciseConfigurationService.findById(
-        updateExerciseSetDto.strengthExerciseConfigurationId!
-      );
-    if (!strengthExerciseConfiguration) {
-      throw new NotFoundException('Strength exercise configuration not found');
-    }
-    const { weight, reps } = updateExerciseSetDto;
-    const updatedExerciseSet = Object.assign(exerciseSetToUpdate, {
-      strengthExerciseConfiguration,
-      weight,
-      reps,
-    });
+    const updatedExerciseSet = Object.assign(
+      exerciseSetToUpdate,
+      updateExerciseSetDto
+    );
     return this.exerciseSetsRepo.save(updatedExerciseSet);
   }
 

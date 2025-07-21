@@ -28,7 +28,15 @@ export class WorkoutService {
   }
 
   async findAll(): Promise<Workout[]> {
-    return this.workoutsRepo.find({ relations: ['author'] });
+    return this.workoutsRepo.find({
+      relations: [
+        'author',
+        'cardioExerciseConfigurations',
+        'strengthExerciseConfigurations',
+        'cardioExerciseConfigurations.exercise',
+        'strengthExerciseConfigurations.exercise',
+      ],
+    });
   }
 
   async findById(id: string): Promise<Workout | null> {

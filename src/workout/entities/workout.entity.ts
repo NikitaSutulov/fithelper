@@ -1,4 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { CardioExerciseConfiguration } from 'src/cardio-exercise-configuration/entities/cardio-exercise-configuration.entity';
+import { StrengthExerciseConfiguration } from 'src/strength-exercise-configuration/entities/strength-exercise-configuration.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
   AfterUpdate,
@@ -6,6 +8,7 @@ import {
   Column,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -29,6 +32,14 @@ export class Workout {
   @ApiProperty({ example: '2000-12-30T21:00:00.122Z' })
   @Column({ name: 'update_date', type: 'timestamp' })
   updateTime: string;
+
+  @ApiProperty({ isArray: true, type: CardioExerciseConfiguration })
+  @OneToMany(() => CardioExerciseConfiguration, (config) => config.workout)
+  cardioExerciseConfigurations: CardioExerciseConfiguration[];
+
+  @ApiProperty({ isArray: true, type: StrengthExerciseConfiguration })
+  @OneToMany(() => StrengthExerciseConfiguration, (config) => config.workout)
+  strengthExerciseConfigurations: StrengthExerciseConfiguration[];
 
   @AfterUpdate()
   setNewUpdateTime() {

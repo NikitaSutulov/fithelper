@@ -7,6 +7,11 @@ export class CreateCardioExerciseConfigurationDto {
   @IsNotEmpty()
   exerciseId: string;
 
+  @ApiProperty({ example: '00000000-0000-0000-0000-000000000000' })
+  @IsUUID()
+  @IsNotEmpty()
+  workoutId: string;
+
   @ApiProperty({ example: 600 })
   @IsNumber()
   @IsPositive()

@@ -7,16 +7,12 @@ import {
   NotFoundException,
   Param,
   ParseUUIDPipe,
-  Patch,
   Post,
 } from '@nestjs/common';
 import { StrengthExerciseConfigurationService } from './strength-exercise-configuration.service';
 import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { StrengthExerciseConfiguration } from './entities/strength-exercise-configuration.entity';
-import {
-  CreateStrengthExerciseConfigurationDto,
-  UpdateStrengthExerciseConfigurationDto,
-} from './dto';
+import { CreateStrengthExerciseConfigurationDto } from './dto';
 
 @Controller('strength-exercise-configuration')
 export class StrengthExerciseConfigurationController {
@@ -78,36 +74,6 @@ export class StrengthExerciseConfigurationController {
       throw new NotFoundException('Strength exercise configuration not found');
     }
     return strengthExerciseConfiguration;
-  }
-
-  @Patch(':id')
-  @ApiOperation({
-    summary: 'Updates a strength exercise configuration with specified id',
-  })
-  @ApiParam({
-    name: 'id',
-    required: true,
-    description: 'Strength exercise configuration ID',
-  })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Success',
-    type: StrengthExerciseConfiguration,
-  })
-  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
-  @ApiResponse({
-    status: HttpStatus.NOT_FOUND,
-    description: 'Strength exercise configuration not found',
-  })
-  update(
-    @Param('id', new ParseUUIDPipe()) id: string,
-    @Body()
-    updateStrengthExerciseConfigurationDto: UpdateStrengthExerciseConfigurationDto
-  ) {
-    return this.strengthExerciseConfigurationService.update(
-      id,
-      updateStrengthExerciseConfigurationDto
-    );
   }
 
   @Delete(':id')

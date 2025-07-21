@@ -6,4 +6,9 @@ export class CreateStrengthExerciseConfigurationDto {
   @IsUUID()
   @IsNotEmpty()
   exerciseId: string;
+
+  @ApiProperty({ example: '00000000-0000-0000-0000-000000000000' })
+  @IsUUID()
+  @IsNotEmpty()
+  workoutId: string;
 }
