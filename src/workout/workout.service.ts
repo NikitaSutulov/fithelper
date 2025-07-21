@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateWorkoutDto, UpdateWorkoutDto } from './dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Workout } from './entities/workout.entity';
@@ -20,7 +16,7 @@ export class WorkoutService {
   async create(createWorkoutDto: CreateWorkoutDto): Promise<Workout> {
     const author = await this.userService.findById(createWorkoutDto.authorId);
     if (!author) {
-      throw new BadRequestException('Author not found');
+      throw new NotFoundException('Author not found');
     }
     const { name, isPublic } = createWorkoutDto;
     const newWorkout = this.workoutsRepo.create({
