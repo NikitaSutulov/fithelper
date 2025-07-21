@@ -15,7 +15,7 @@ export class Workout {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ApiProperty({ example: 'Biceps' })
+  @ApiProperty({ example: 'Full-body workout' })
   @Column()
   name: string;
 
