@@ -22,6 +22,7 @@ export class Workout {
   @Column()
   name: string;
 
+  @ApiProperty({ type: User })
   @ManyToOne(() => User)
   author: User;
 

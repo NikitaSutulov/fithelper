@@ -9,9 +9,11 @@ export class UserWorkout {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @ApiProperty({ type: User })
   @ManyToOne(() => User)
   user: User;
 
+  @ApiProperty({ type: Workout })
   @ManyToOne(() => Workout)
   workout: Workout;
 
