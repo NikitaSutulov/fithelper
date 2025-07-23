@@ -4,13 +4,15 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateStrengthExerciseConfigurationDto } from './dto';
 import { ExerciseService } from 'src/exercise/exercise.service';
+import { WorkoutService } from 'src/workout/workout.service';
 
 @Injectable()
 export class StrengthExerciseConfigurationService {
   constructor(
     @InjectRepository(StrengthExerciseConfiguration)
     private readonly strengthExerciseConfigurationsRepo: Repository<StrengthExerciseConfiguration>,
-    private readonly exerciseService: ExerciseService
+    private readonly exerciseService: ExerciseService,
+    private readonly workoutService: WorkoutService
   ) {}
 
   async create(
@@ -22,8 +24,14 @@ export class StrengthExerciseConfigurationService {
     if (!exercise) {
       throw new NotFoundException('Exercise not found');
     }
+    const workout = await this.workoutService.findById(
+      createStrengthExerciseConfigurationDto.workoutId
+    );
+    if (!workout) {
+      throw new NotFoundException('Workout not found');
+    }
     const newStrengthExerciseConfiguration =
-      this.strengthExerciseConfigurationsRepo.create({ exercise });
+      this.strengthExerciseConfigurationsRepo.create({ exercise, workout });
     return this.strengthExerciseConfigurationsRepo.save(
       newStrengthExerciseConfiguration
     );
