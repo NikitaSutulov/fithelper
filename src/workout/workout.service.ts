@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateWorkoutDto, UpdateWorkoutDto } from './dto';
+import { CreateWorkoutDto, UpdateWorkoutDto, WorkoutDto } from './dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Workout } from './entities/workout.entity';
 import { Repository } from 'typeorm';
@@ -13,7 +13,22 @@ export class WorkoutService {
     private readonly userService: UserService
   ) {}
 
-  async create(createWorkoutDto: CreateWorkoutDto): Promise<Workout> {
+  private toDto(workout: Workout): WorkoutDto {
+    return {
+      id: workout.id,
+      name: workout.name,
+      authorId: workout.author.id,
+      isPublic: workout.isPublic,
+      updateTime: workout.updateTime,
+      cardioExerciseConfigurationIds: workout.cardioExerciseConfigurations.map(
+        (config) => config.id
+      ),
+      strengthExerciseConfigurationIds:
+        workout.strengthExerciseConfigurations.map((config) => config.id),
+    };
+  }
+
+  async create(createWorkoutDto: CreateWorkoutDto): Promise<WorkoutDto> {
     const author = await this.userService.findById(createWorkoutDto.authorId);
     if (!author) {
       throw new NotFoundException('Author not found');
@@ -23,44 +38,61 @@ export class WorkoutService {
       name,
       author,
       isPublic,
+      cardioExerciseConfigurations: [],
+      strengthExerciseConfigurations: [],
     });
-    return this.workoutsRepo.save(newWorkout);
+    return this.toDto(await this.workoutsRepo.save(newWorkout));
   }
 
-  async findAll(): Promise<Workout[]> {
-    return this.workoutsRepo.find({
+  async findAll(): Promise<WorkoutDto[]> {
+    return (
+      await this.workoutsRepo.find({
+        relations: [
+          'author',
+          'cardioExerciseConfigurations',
+          'strengthExerciseConfigurations',
+        ],
+      })
+    ).map(this.toDto);
+  }
+
+  async findById(id: string): Promise<WorkoutDto | null> {
+    const workout = await this.workoutsRepo.findOne({
+      where: { id },
       relations: [
         'author',
         'cardioExerciseConfigurations',
         'strengthExerciseConfigurations',
-        'cardioExerciseConfigurations.exercise',
-        'strengthExerciseConfigurations.exercise',
       ],
     });
-  }
-
-  async findById(id: string): Promise<Workout | null> {
-    return this.workoutsRepo.findOne({ where: { id }, relations: ['author'] });
+    return workout ? this.toDto(workout) : null;
   }
 
   async update(
     id: string,
     updateWorkoutDto: UpdateWorkoutDto
-  ): Promise<Workout> {
-    const workoutToUpdate = await this.findById(id);
+  ): Promise<WorkoutDto> {
+    const workoutToUpdate = await this.workoutsRepo.findOne({
+      where: { id },
+      relations: [
+        'author',
+        'cardioExerciseConfigurations',
+        'strengthExerciseConfigurations',
+      ],
+    });
     if (!workoutToUpdate) {
       throw new NotFoundException('Workout not found');
     }
     const updatedWorkout = Object.assign(workoutToUpdate, updateWorkoutDto);
-    return this.workoutsRepo.save(updatedWorkout);
+    return this.toDto(await this.workoutsRepo.save(updatedWorkout));
   }
 
-  async delete(id: string): Promise<Workout> {
+  async delete(id: string): Promise<WorkoutDto> {
     const workoutToDelete = await this.findById(id);
     if (!workoutToDelete) {
       throw new NotFoundException('Workout not found');
     }
-    await this.workoutsRepo.remove(workoutToDelete);
+    await this.workoutsRepo.delete({ id });
     return workoutToDelete;
   }
 }

@@ -12,9 +12,9 @@ import {
 } from '@nestjs/common';
 import { CardioExerciseConfigurationService } from './cardio-exercise-configuration.service';
 import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
-import { CardioExerciseConfiguration } from './entities/cardio-exercise-configuration.entity';
 import {
   CreateCardioExerciseConfigurationDto,
+  CardioExerciseConfigurationDto,
   UpdateCardioExerciseConfigurationDto,
 } from './dto';
 
@@ -29,7 +29,7 @@ export class CardioExerciseConfigurationController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Success',
-    type: CardioExerciseConfiguration,
+    type: CardioExerciseConfigurationDto,
   })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
   create(
@@ -47,7 +47,7 @@ export class CardioExerciseConfigurationController {
     status: HttpStatus.OK,
     description: 'Success',
     isArray: true,
-    type: CardioExerciseConfiguration,
+    type: CardioExerciseConfigurationDto,
   })
   findAll() {
     return this.cardioExerciseConfigurationService.findAll();
@@ -65,7 +65,7 @@ export class CardioExerciseConfigurationController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Success',
-    type: CardioExerciseConfiguration,
+    type: CardioExerciseConfigurationDto,
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
@@ -92,7 +92,7 @@ export class CardioExerciseConfigurationController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Success',
-    type: CardioExerciseConfiguration,
+    type: CardioExerciseConfigurationDto,
   })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
   @ApiResponse({
@@ -122,7 +122,7 @@ export class CardioExerciseConfigurationController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Success',
-    type: CardioExerciseConfiguration,
+    type: CardioExerciseConfigurationDto,
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,

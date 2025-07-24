@@ -6,7 +6,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
-import { CreateUserDto, UpdateUserDto } from './dto';
+import { CreateUserDto, UpdateUserDto, UserDto } from './dto';
 import { hash } from 'bcrypt';
 
 @Injectable()
@@ -16,33 +16,48 @@ export class UserService {
     private readonly usersRepo: Repository<User>
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  private toDto(user: User): UserDto {
+    return {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      birthdate: user.birthdate,
+      gender: user.gender,
+      height: user.height,
+      profilePicture: user.profilePicture,
+    };
+  }
+
+  async create(createUserDto: CreateUserDto): Promise<UserDto> {
     await this.ensureUsernameAndEmailAvailable(
       createUserDto.username,
       createUserDto.email
     );
     const newUser = this.usersRepo.create(createUserDto);
     newUser.password = await this.hashPassword(newUser.password);
-    return this.usersRepo.save(newUser);
+    return this.toDto(await this.usersRepo.save(newUser));
   }
 
-  async findById(id: string): Promise<User | null> {
-    return this.usersRepo.findOneBy({ id });
+  async findById(id: string): Promise<UserDto | null> {
+    const user = await this.usersRepo.findOneBy({ id });
+    return user ? this.toDto(user) : null;
   }
 
-  async findByUsername(username: string): Promise<User | null> {
-    return this.usersRepo.findOneBy({ username });
+  async findByUsername(username: string): Promise<UserDto | null> {
+    const user = await this.usersRepo.findOneBy({ username });
+    return user ? this.toDto(user) : null;
   }
 
-  async findByEmail(email: string): Promise<User | null> {
-    return this.usersRepo.findOneBy({ email });
+  async findByEmail(email: string): Promise<UserDto | null> {
+    const user = await this.usersRepo.findOneBy({ email });
+    return user ? this.toDto(user) : null;
   }
 
-  async findAll(): Promise<User[]> {
-    return this.usersRepo.find();
+  async findAll(): Promise<UserDto[]> {
+    return (await this.usersRepo.find()).map(this.toDto);
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<UserDto> {
     const userToEdit = await this.usersRepo.findOneBy({ id });
     if (!userToEdit) {
       throw new NotFoundException('User not found');
@@ -55,10 +70,10 @@ export class UserService {
     }
     const updatedUser = Object.assign(userToEdit, updateUserDto);
     updatedUser.password = await this.hashPassword(updatedUser.password);
-    return this.usersRepo.save(updatedUser);
+    return this.toDto(await this.usersRepo.save(updatedUser));
   }
 
-  async delete(id: string): Promise<User> {
+  async delete(id: string): Promise<UserDto> {
     const userToDelete = await this.findById(id);
     if (!userToDelete) {
       throw new NotFoundException('User not found');

@@ -2,7 +2,11 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { ExerciseSet } from './entities/exercise-set.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateExerciseSetDto, UpdateExerciseSetDto } from './dto';
+import {
+  CreateExerciseSetDto,
+  ExerciseSetDto,
+  UpdateExerciseSetDto,
+} from './dto';
 import { StrengthExerciseConfigurationService } from 'src/strength-exercise-configuration/strength-exercise-configuration.service';
 
 @Injectable()
@@ -13,9 +17,19 @@ export class ExerciseSetService {
     private readonly strengthExerciseConfigurationService: StrengthExerciseConfigurationService
   ) {}
 
+  private toDto(exerciseSet: ExerciseSet): ExerciseSetDto {
+    return {
+      id: exerciseSet.id,
+      strengthExerciseConfigurationId:
+        exerciseSet.strengthExerciseConfiguration.id,
+      weight: exerciseSet.weight,
+      reps: exerciseSet.reps,
+    };
+  }
+
   async create(
     createExerciseSetDto: CreateExerciseSetDto
-  ): Promise<ExerciseSet> {
+  ): Promise<ExerciseSetDto> {
     const strengthExerciseConfiguration =
       await this.strengthExerciseConfigurationService.findById(
         createExerciseSetDto.strengthExerciseConfigurationId
@@ -29,33 +43,33 @@ export class ExerciseSetService {
       weight,
       reps,
     });
-    return this.exerciseSetsRepo.save(newExerciseSet);
+    return this.toDto(await this.exerciseSetsRepo.save(newExerciseSet));
   }
 
-  async findAll(): Promise<ExerciseSet[]> {
-    return this.exerciseSetsRepo.find({
-      relations: [
-        'strengthExerciseConfiguration',
-        'strengthExerciseConfiguration.exercise',
-      ],
-    });
+  async findAll(): Promise<ExerciseSetDto[]> {
+    return (
+      await this.exerciseSetsRepo.find({
+        relations: ['strengthExerciseConfiguration'],
+      })
+    ).map(this.toDto);
   }
 
-  async findById(id: string): Promise<ExerciseSet | null> {
-    return this.exerciseSetsRepo.findOne({
+  async findById(id: string): Promise<ExerciseSetDto | null> {
+    const exerciseSet = await this.exerciseSetsRepo.findOne({
       where: { id },
-      relations: [
-        'strengthExerciseConfiguration',
-        'strengthExerciseConfiguration.exercise',
-      ],
+      relations: ['strengthExerciseConfiguration'],
     });
+    return exerciseSet ? this.toDto(exerciseSet) : null;
   }
 
   async update(
     id: string,
     updateExerciseSetDto: UpdateExerciseSetDto
-  ): Promise<ExerciseSet> {
-    const exerciseSetToUpdate = await this.findById(id);
+  ): Promise<ExerciseSetDto> {
+    const exerciseSetToUpdate = await this.exerciseSetsRepo.findOne({
+      where: { id },
+      relations: ['strengthExerciseConfiguration'],
+    });
     if (!exerciseSetToUpdate) {
       throw new NotFoundException('Exercise set not found');
     }
@@ -63,15 +77,15 @@ export class ExerciseSetService {
       exerciseSetToUpdate,
       updateExerciseSetDto
     );
-    return this.exerciseSetsRepo.save(updatedExerciseSet);
+    return this.toDto(await this.exerciseSetsRepo.save(updatedExerciseSet));
   }
 
-  async delete(id: string): Promise<ExerciseSet> {
+  async delete(id: string): Promise<ExerciseSetDto> {
     const exerciseSetToDelete = await this.findById(id);
     if (!exerciseSetToDelete) {
       throw new NotFoundException('Exercise set not found');
     }
-    await this.exerciseSetsRepo.delete(exerciseSetToDelete);
+    await this.exerciseSetsRepo.delete({ id });
     return exerciseSetToDelete;
   }
 }

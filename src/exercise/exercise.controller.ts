@@ -11,9 +11,13 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { ExerciseService } from './exercise.service';
-import { AddMuscleDto, CreateExerciseDto, UpdateExerciseDto } from './dto';
+import {
+  AddMuscleDto,
+  CreateExerciseDto,
+  ExerciseDto,
+  UpdateExerciseDto,
+} from './dto';
 import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
-import { Exercise } from './entities/exercise.entity';
 
 @Controller('exercise')
 export class ExerciseController {
@@ -24,7 +28,7 @@ export class ExerciseController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Success',
-    type: Exercise,
+    type: ExerciseDto,
   })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
   create(@Body() createExerciseDto: CreateExerciseDto) {
@@ -37,7 +41,7 @@ export class ExerciseController {
     status: HttpStatus.OK,
     description: 'Success',
     isArray: true,
-    type: Exercise,
+    type: ExerciseDto,
   })
   findAll() {
     return this.exerciseService.findAll();
@@ -49,7 +53,7 @@ export class ExerciseController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Success',
-    type: Exercise,
+    type: ExerciseDto,
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
@@ -69,7 +73,7 @@ export class ExerciseController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Success',
-    type: Exercise,
+    type: ExerciseDto,
   })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
   @ApiResponse({
@@ -89,7 +93,7 @@ export class ExerciseController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Success',
-    type: Exercise,
+    type: ExerciseDto,
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
@@ -107,7 +111,7 @@ export class ExerciseController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Success',
-    type: Exercise,
+    type: ExerciseDto,
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
@@ -125,7 +129,7 @@ export class ExerciseController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Success',
-    type: Exercise,
+    type: ExerciseDto,
   })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
   @ApiResponse({
@@ -149,7 +153,7 @@ export class ExerciseController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Success',
-    type: Exercise,
+    type: ExerciseDto,
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,

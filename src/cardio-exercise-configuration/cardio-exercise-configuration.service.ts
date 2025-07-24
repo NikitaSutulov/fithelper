@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { ExerciseService } from 'src/exercise/exercise.service';
 import {
   CreateCardioExerciseConfigurationDto,
+  CardioExerciseConfigurationDto,
   UpdateCardioExerciseConfigurationDto,
 } from './dto';
 import { WorkoutService } from 'src/workout/workout.service';
@@ -18,9 +19,20 @@ export class CardioExerciseConfigurationService {
     private readonly workoutService: WorkoutService
   ) {}
 
+  private toDto(
+    cardioExerciseConfiguration: CardioExerciseConfiguration
+  ): CardioExerciseConfigurationDto {
+    return {
+      id: cardioExerciseConfiguration.id,
+      exerciseId: cardioExerciseConfiguration.exercise.id,
+      workoutId: cardioExerciseConfiguration.workout.id,
+      time: cardioExerciseConfiguration.time,
+    };
+  }
+
   async create(
     createCardioExerciseConfigurationDto: CreateCardioExerciseConfigurationDto
-  ): Promise<CardioExerciseConfiguration> {
+  ): Promise<CardioExerciseConfigurationDto> {
     const exercise = await this.exerciseService.findById(
       createCardioExerciseConfigurationDto.exerciseId
     );
@@ -36,47 +48,59 @@ export class CardioExerciseConfigurationService {
     const time = createCardioExerciseConfigurationDto.time;
     const newCardioExerciseConfiguration =
       this.cardioExerciseConfigurationsRepo.create({ exercise, workout, time });
-    return this.cardioExerciseConfigurationsRepo.save(
-      newCardioExerciseConfiguration
+    return this.toDto(
+      await this.cardioExerciseConfigurationsRepo.save(
+        newCardioExerciseConfiguration
+      )
     );
   }
 
-  async findAll(): Promise<CardioExerciseConfiguration[]> {
-    return this.cardioExerciseConfigurationsRepo.find({
-      relations: ['exercise', 'workout'],
-    });
+  async findAll(): Promise<CardioExerciseConfigurationDto[]> {
+    return (
+      await this.cardioExerciseConfigurationsRepo.find({
+        relations: ['exercise', 'workout'],
+      })
+    ).map(this.toDto);
   }
 
-  async findById(id: string): Promise<CardioExerciseConfiguration | null> {
-    return this.cardioExerciseConfigurationsRepo.findOne({
-      where: { id },
-      relations: ['exercise', 'workout'],
-    });
+  async findById(id: string): Promise<CardioExerciseConfigurationDto | null> {
+    const cardioExerciseConfiguration =
+      await this.cardioExerciseConfigurationsRepo.findOne({
+        where: { id },
+        relations: ['exercise', 'workout'],
+      });
+    return cardioExerciseConfiguration
+      ? this.toDto(cardioExerciseConfiguration)
+      : null;
   }
 
   async update(
     id: string,
     updateCardioExerciseConfigurationDto: UpdateCardioExerciseConfigurationDto
-  ): Promise<CardioExerciseConfiguration> {
-    const cardioExerciseConfigurationToUpdate = await this.findById(id);
+  ): Promise<CardioExerciseConfigurationDto> {
+    const cardioExerciseConfigurationToUpdate =
+      await this.cardioExerciseConfigurationsRepo.findOne({
+        where: { id },
+        relations: ['exercise', 'workout'],
+      });
     if (!cardioExerciseConfigurationToUpdate) {
       throw new NotFoundException('Cardio exercise configuration not found');
     }
     cardioExerciseConfigurationToUpdate.time =
       updateCardioExerciseConfigurationDto.time;
-    return this.cardioExerciseConfigurationsRepo.save(
-      cardioExerciseConfigurationToUpdate
+    return this.toDto(
+      await this.cardioExerciseConfigurationsRepo.save(
+        cardioExerciseConfigurationToUpdate
+      )
     );
   }
 
-  async delete(id: string): Promise<CardioExerciseConfiguration> {
+  async delete(id: string): Promise<CardioExerciseConfigurationDto> {
     const cardioExerciseConfigurationToDelete = await this.findById(id);
     if (!cardioExerciseConfigurationToDelete) {
       throw new NotFoundException('Cardio exercise configuration not found');
     }
-    await this.cardioExerciseConfigurationsRepo.delete(
-      cardioExerciseConfigurationToDelete
-    );
+    await this.cardioExerciseConfigurationsRepo.delete({ id });
     return cardioExerciseConfigurationToDelete;
   }
 }

@@ -3,12 +3,17 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { AddMuscleDto, CreateExerciseDto, UpdateExerciseDto } from './dto';
+import {
+  AddMuscleDto,
+  CreateExerciseDto,
+  ExerciseDto,
+  UpdateExerciseDto,
+} from './dto';
 import { Exercise } from './entities/exercise.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Muscle } from 'src/muscle/entities/muscle.entity';
 import { MuscleService } from 'src/muscle/muscle.service';
+import { MuscleDto } from 'src/muscle/dto';
 
 @Injectable()
 export class ExerciseService {
@@ -18,35 +23,50 @@ export class ExerciseService {
     private readonly muscleService: MuscleService
   ) {}
 
-  async create(createExerciseDto: CreateExerciseDto): Promise<Exercise> {
-    const newExercise = this.exercisesRepo.create(createExerciseDto);
-    return this.exercisesRepo.save(newExercise);
+  private toDto(exercise: Exercise): ExerciseDto {
+    return {
+      id: exercise.id,
+      name: exercise.name,
+      description: exercise.description,
+      muscleIds: exercise.muscles.map((muscle) => muscle.id),
+    };
   }
 
-  async findAll(): Promise<Exercise[]> {
-    return this.exercisesRepo.find({ relations: ['muscles'] });
+  async create(createExerciseDto: CreateExerciseDto): Promise<ExerciseDto> {
+    const newExercise = this.exercisesRepo.create({
+      ...createExerciseDto,
+      muscles: [],
+    });
+    return this.toDto(await this.exercisesRepo.save(newExercise));
   }
 
-  async findById(id: string): Promise<Exercise | null> {
-    return this.exercisesRepo.findOne({
+  async findAll(): Promise<ExerciseDto[]> {
+    return (await this.exercisesRepo.find({ relations: ['muscles'] })).map(
+      this.toDto
+    );
+  }
+
+  async findById(id: string): Promise<ExerciseDto | null> {
+    const exercise = await this.exercisesRepo.findOne({
       where: { id },
       relations: ['muscles'],
     });
+    return exercise ? this.toDto(exercise) : null;
   }
 
   async update(
     id: string,
     updateExerciseDto: UpdateExerciseDto
-  ): Promise<Exercise> {
+  ): Promise<ExerciseDto> {
     const exerciseToUpdate = await this.findById(id);
     if (!exerciseToUpdate) {
       throw new NotFoundException('Exercise not found');
     }
     const updatedExercise = Object.assign(exerciseToUpdate, updateExerciseDto);
-    return this.exercisesRepo.save(updatedExercise);
+    return this.toDto(await this.exercisesRepo.save(updatedExercise));
   }
 
-  async delete(id: string): Promise<Exercise> {
+  async delete(id: string): Promise<ExerciseDto> {
     const exerciseToDelete = await this.findById(id);
     if (!exerciseToDelete) {
       throw new NotFoundException('Exercise not found');
@@ -55,16 +75,26 @@ export class ExerciseService {
     return exerciseToDelete;
   }
 
-  async getMuscles(id: string): Promise<Muscle[]> {
+  async getMuscles(id: string): Promise<MuscleDto[]> {
     const exercise = await this.findById(id);
     if (!exercise) {
       throw new NotFoundException('Exercise not found');
     }
-    return exercise.muscles;
+    return Promise.all(
+      exercise.muscleIds.map(
+        async (id) => (await this.muscleService.findById(id))!
+      )
+    );
   }
 
-  async addMuscle(id: string, addMuscleDto: AddMuscleDto): Promise<Exercise> {
-    const exercise = await this.findById(id);
+  async addMuscle(
+    id: string,
+    addMuscleDto: AddMuscleDto
+  ): Promise<ExerciseDto> {
+    const exercise = await this.exercisesRepo.findOne({
+      where: { id },
+      relations: ['muscles'],
+    });
     if (!exercise) {
       throw new NotFoundException('Exercise not found');
     }
@@ -76,11 +106,14 @@ export class ExerciseService {
       throw new BadRequestException('Muscle already added for this exercise');
     }
     exercise.muscles.push(muscle);
-    return this.exercisesRepo.save(exercise);
+    return this.toDto(await this.exercisesRepo.save(exercise));
   }
 
-  async deleteMuscle(id: string, muscleId: string): Promise<Exercise> {
-    const exercise = await this.findById(id);
+  async deleteMuscle(id: string, muscleId: string): Promise<ExerciseDto> {
+    const exercise = await this.exercisesRepo.findOne({
+      where: { id },
+      relations: ['muscles'],
+    });
     if (!exercise) {
       throw new NotFoundException('Exercise not found');
     }
@@ -93,6 +126,6 @@ export class ExerciseService {
       throw new NotFoundException('Muscle not associated with this exercise');
     }
     exercise.muscles.splice(muscleIndex, 1);
-    return this.exercisesRepo.save(exercise);
+    return this.toDto(await this.exercisesRepo.save(exercise));
   }
 }

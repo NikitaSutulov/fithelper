@@ -11,9 +11,8 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { MuscleService } from './muscle.service';
-import { CreateMuscleDto, UpdateMuscleDto } from './dto';
+import { CreateMuscleDto, MuscleDto, UpdateMuscleDto } from './dto';
 import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
-import { Muscle } from './entities/muscle.entity';
 
 @Controller('muscle')
 export class MuscleController {
@@ -24,7 +23,7 @@ export class MuscleController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Success',
-    type: Muscle,
+    type: MuscleDto,
   })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
   create(@Body() createMuscleDto: CreateMuscleDto) {
@@ -37,7 +36,7 @@ export class MuscleController {
     status: HttpStatus.OK,
     description: 'Success',
     isArray: true,
-    type: Muscle,
+    type: MuscleDto,
   })
   findAll() {
     return this.muscleService.findAll();
@@ -46,7 +45,11 @@ export class MuscleController {
   @Get(':id')
   @ApiOperation({ summary: 'Finds a muscle with specified id' })
   @ApiParam({ name: 'id', required: true, description: 'Muscle ID' })
-  @ApiResponse({ status: HttpStatus.OK, description: 'Success', type: Muscle })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Success',
+    type: MuscleDto,
+  })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
     description: 'Muscle not found',
@@ -62,7 +65,11 @@ export class MuscleController {
   @Patch(':id')
   @ApiOperation({ summary: 'Updates a muscle with specified id' })
   @ApiParam({ name: 'id', required: true, description: 'Muscle ID' })
-  @ApiResponse({ status: HttpStatus.OK, description: 'Success', type: Muscle })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Success',
+    type: MuscleDto,
+  })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
@@ -78,7 +85,11 @@ export class MuscleController {
   @Delete(':id')
   @ApiOperation({ summary: 'Deletes a muscle with specified id' })
   @ApiParam({ name: 'id', required: true, description: 'Muscle ID' })
-  @ApiResponse({ status: HttpStatus.OK, description: 'Success', type: Muscle })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Success',
+    type: MuscleDto,
+  })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
     description: 'Muscle not found',

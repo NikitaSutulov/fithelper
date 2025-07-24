@@ -9,7 +9,7 @@ import { UserWorkout } from './entities/user-workout.entity';
 import { Repository } from 'typeorm';
 import { UserService } from 'src/user/user.service';
 import { WorkoutService } from 'src/workout/workout.service';
-import { CreateUserWorkoutDto } from './dto';
+import { CreateUserWorkoutDto, UserWorkoutDto } from './dto';
 
 @Injectable()
 export class UserWorkoutService {
@@ -20,9 +20,18 @@ export class UserWorkoutService {
     private readonly workoutService: WorkoutService
   ) {}
 
+  private toDto(userWorkout: UserWorkout): UserWorkoutDto {
+    return {
+      id: userWorkout.id,
+      userId: userWorkout.user.id,
+      workoutId: userWorkout.workout.id,
+      isOwner: userWorkout.isOwner,
+    };
+  }
+
   async create(
     createUserWorkoutDto: CreateUserWorkoutDto
-  ): Promise<UserWorkout> {
+  ): Promise<UserWorkoutDto> {
     const user = await this.userService.findById(createUserWorkoutDto.userId);
     if (!user) {
       throw new NotFoundException('User not found');
@@ -33,14 +42,14 @@ export class UserWorkoutService {
     if (!workout) {
       throw new NotFoundException('Workout not found');
     }
-    const isOwner = workout.author.id === user.id;
+    const isOwner = workout.authorId === user.id;
     if (!isOwner && !workout.isPublic) {
       throw new ForbiddenException(
         'Access denied: Private workout of another user'
       );
     }
     const existingUserWorkout = (await this.findByUserId(user.id)).find(
-      (uw) => uw.workout.id === workout.id
+      (uw) => uw.workoutId === workout.id
     );
     if (existingUserWorkout) {
       throw new BadRequestException(
@@ -52,37 +61,42 @@ export class UserWorkoutService {
       workout,
       isOwner,
     });
-    return this.userWorkoutsRepo.save(newUserWorkout);
+    return this.toDto(await this.userWorkoutsRepo.save(newUserWorkout));
   }
 
-  async findAll(): Promise<UserWorkout[]> {
-    return this.userWorkoutsRepo.find({ relations: ['user', 'workout'] });
+  async findAll(): Promise<UserWorkoutDto[]> {
+    return (
+      await this.userWorkoutsRepo.find({ relations: ['user', 'workout'] })
+    ).map(this.toDto);
   }
 
-  async findByUserId(userId: string): Promise<UserWorkout[]> {
+  async findByUserId(userId: string): Promise<UserWorkoutDto[]> {
     const user = await this.userService.findById(userId);
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    return this.userWorkoutsRepo.find({
-      where: { user },
-      relations: ['user', 'workout'],
-    });
+    return (
+      await this.userWorkoutsRepo.find({
+        where: { user },
+        relations: ['user', 'workout'],
+      })
+    ).map(this.toDto);
   }
 
-  async findById(id: string): Promise<UserWorkout | null> {
-    return this.userWorkoutsRepo.findOne({
+  async findById(id: string): Promise<UserWorkoutDto | null> {
+    const userWorkout = await this.userWorkoutsRepo.findOne({
       where: { id },
       relations: ['user', 'workout'],
     });
+    return userWorkout ? this.toDto(userWorkout) : null;
   }
 
-  async delete(id: string): Promise<UserWorkout> {
+  async delete(id: string): Promise<UserWorkoutDto> {
     const userWorkoutToDelete = await this.findById(id);
     if (!userWorkoutToDelete) {
       throw new NotFoundException('User workout not found');
     }
-    await this.userWorkoutsRepo.remove(userWorkoutToDelete);
+    await this.userWorkoutsRepo.delete({ id });
     return userWorkoutToDelete;
   }
 }

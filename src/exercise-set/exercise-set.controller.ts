@@ -11,9 +11,12 @@ import {
   Put,
 } from '@nestjs/common';
 import { ExerciseSetService } from './exercise-set.service';
-import { CreateExerciseSetDto, UpdateExerciseSetDto } from './dto';
+import {
+  CreateExerciseSetDto,
+  ExerciseSetDto,
+  UpdateExerciseSetDto,
+} from './dto';
 import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
-import { ExerciseSet } from './entities/exercise-set.entity';
 
 @Controller('exercise-set')
 export class ExerciseSetController {
@@ -24,7 +27,7 @@ export class ExerciseSetController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Success',
-    type: ExerciseSet,
+    type: ExerciseSetDto,
   })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
   create(@Body() createExerciseSetDto: CreateExerciseSetDto) {
@@ -37,7 +40,7 @@ export class ExerciseSetController {
     status: HttpStatus.OK,
     description: 'Success',
     isArray: true,
-    type: ExerciseSet,
+    type: ExerciseSetDto,
   })
   findAll() {
     return this.exerciseSetService.findAll();
@@ -49,7 +52,7 @@ export class ExerciseSetController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Success',
-    type: ExerciseSet,
+    type: ExerciseSetDto,
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
@@ -69,7 +72,7 @@ export class ExerciseSetController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Success',
-    type: ExerciseSet,
+    type: ExerciseSetDto,
   })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
   @ApiResponse({
@@ -89,7 +92,7 @@ export class ExerciseSetController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Success',
-    type: ExerciseSet,
+    type: ExerciseSetDto,
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,

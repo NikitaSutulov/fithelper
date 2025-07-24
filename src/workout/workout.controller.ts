@@ -11,9 +11,8 @@ import {
   Put,
 } from '@nestjs/common';
 import { WorkoutService } from './workout.service';
-import { CreateWorkoutDto, UpdateWorkoutDto } from './dto';
+import { CreateWorkoutDto, UpdateWorkoutDto, WorkoutDto } from './dto';
 import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
-import { Workout } from './entities/workout.entity';
 
 @Controller('workout')
 export class WorkoutController {
@@ -24,7 +23,7 @@ export class WorkoutController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Success',
-    type: Workout,
+    type: WorkoutDto,
   })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
   create(@Body() createWorkoutDto: CreateWorkoutDto) {
@@ -37,7 +36,7 @@ export class WorkoutController {
     status: HttpStatus.OK,
     description: 'Success',
     isArray: true,
-    type: Workout,
+    type: WorkoutDto,
   })
   findAll() {
     return this.workoutService.findAll();
@@ -46,7 +45,11 @@ export class WorkoutController {
   @Get(':id')
   @ApiOperation({ summary: 'Finds a workout with specified id' })
   @ApiParam({ name: 'id', required: true, description: 'Workout ID' })
-  @ApiResponse({ status: HttpStatus.OK, description: 'Success', type: Workout })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Success',
+    type: WorkoutDto,
+  })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
     description: 'Workout not found',
@@ -62,7 +65,11 @@ export class WorkoutController {
   @Put(':id')
   @ApiOperation({ summary: 'Updates a workout with specified id' })
   @ApiParam({ name: 'id', required: true, description: 'Workout ID' })
-  @ApiResponse({ status: HttpStatus.OK, description: 'Success', type: Workout })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Success',
+    type: WorkoutDto,
+  })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
@@ -78,7 +85,11 @@ export class WorkoutController {
   @Delete(':id')
   @ApiOperation({ summary: 'Deletes a workout with specified id' })
   @ApiParam({ name: 'id', required: true, description: 'Workout ID' })
-  @ApiResponse({ status: HttpStatus.OK, description: 'Success', type: Workout })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Success',
+    type: WorkoutDto,
+  })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
     description: 'Workout not found',

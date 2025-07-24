@@ -11,8 +11,7 @@ import {
 } from '@nestjs/common';
 import { UserWorkoutService } from './user-workout.service';
 import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
-import { UserWorkout } from './entities/user-workout.entity';
-import { CreateUserWorkoutDto } from './dto';
+import { CreateUserWorkoutDto, UserWorkoutDto } from './dto';
 
 @Controller('user-workout')
 export class UserWorkoutController {
@@ -23,7 +22,7 @@ export class UserWorkoutController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Success',
-    type: UserWorkout,
+    type: UserWorkoutDto,
   })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
   @ApiResponse({
@@ -44,7 +43,7 @@ export class UserWorkoutController {
     status: HttpStatus.OK,
     description: 'Success',
     isArray: true,
-    type: UserWorkout,
+    type: UserWorkoutDto,
   })
   findAll() {
     return this.userWorkoutService.findAll();
@@ -57,7 +56,7 @@ export class UserWorkoutController {
     status: HttpStatus.OK,
     description: 'Success',
     isArray: true,
-    type: UserWorkout,
+    type: UserWorkoutDto,
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
@@ -73,7 +72,7 @@ export class UserWorkoutController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Success',
-    type: UserWorkout,
+    type: UserWorkoutDto,
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
@@ -93,7 +92,7 @@ export class UserWorkoutController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Success',
-    type: UserWorkout,
+    type: UserWorkoutDto,
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,

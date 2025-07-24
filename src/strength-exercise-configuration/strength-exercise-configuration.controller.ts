@@ -11,8 +11,10 @@ import {
 } from '@nestjs/common';
 import { StrengthExerciseConfigurationService } from './strength-exercise-configuration.service';
 import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
-import { StrengthExerciseConfiguration } from './entities/strength-exercise-configuration.entity';
-import { CreateStrengthExerciseConfigurationDto } from './dto';
+import {
+  CreateStrengthExerciseConfigurationDto,
+  StrengthExerciseConfigurationDto,
+} from './dto';
 
 @Controller('strength-exercise-configuration')
 export class StrengthExerciseConfigurationController {
@@ -25,7 +27,7 @@ export class StrengthExerciseConfigurationController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Success',
-    type: StrengthExerciseConfiguration,
+    type: StrengthExerciseConfigurationDto,
   })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
   create(
@@ -43,7 +45,7 @@ export class StrengthExerciseConfigurationController {
     status: HttpStatus.OK,
     description: 'Success',
     isArray: true,
-    type: StrengthExerciseConfiguration,
+    type: StrengthExerciseConfigurationDto,
   })
   findAll() {
     return this.strengthExerciseConfigurationService.findAll();
@@ -61,7 +63,7 @@ export class StrengthExerciseConfigurationController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Success',
-    type: StrengthExerciseConfiguration,
+    type: StrengthExerciseConfigurationDto,
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
@@ -88,7 +90,7 @@ export class StrengthExerciseConfigurationController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Success',
-    type: StrengthExerciseConfiguration,
+    type: StrengthExerciseConfigurationDto,
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
