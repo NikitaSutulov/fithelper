@@ -58,7 +58,10 @@ export class ExerciseService {
     id: string,
     updateExerciseDto: UpdateExerciseDto
   ): Promise<ExerciseDto> {
-    const exerciseToUpdate = await this.findById(id);
+    const exerciseToUpdate = await this.exercisesRepo.findOne({
+      where: { id },
+      relations: ['muscles'],
+    });
     if (!exerciseToUpdate) {
       throw new NotFoundException('Exercise not found');
     }
