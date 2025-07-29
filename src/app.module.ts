@@ -20,6 +20,8 @@ import { WorkoutModule } from './workout/workout.module';
 import { Workout } from './workout/entities/workout.entity';
 import { UserWorkoutModule } from './user-workout/user-workout.module';
 import { UserWorkout } from './user-workout/entities/user-workout.entity';
+import { WorkoutSessionModule } from './workout-session/workout-session.module';
+import { WorkoutSession } from './workout-session/entities/workout-session.entity';
 
 @Module({
   imports: [
@@ -43,6 +45,7 @@ import { UserWorkout } from './user-workout/entities/user-workout.entity';
           ExerciseSet,
           Workout,
           UserWorkout,
+          WorkoutSession,
         ],
         synchronize: true,
       }),
@@ -56,6 +59,7 @@ import { UserWorkout } from './user-workout/entities/user-workout.entity';
     ExerciseSetModule,
     WorkoutModule,
     UserWorkoutModule,
+    WorkoutSessionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
