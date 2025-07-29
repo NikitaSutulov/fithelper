@@ -4,6 +4,7 @@ import { WorkoutSession } from './entities/workout-session.entity';
 import { Repository } from 'typeorm';
 import { CreateWorkoutSessionDto, WorkoutSessionDto } from './dto';
 import { UserWorkout } from 'src/user-workout/entities/user-workout.entity';
+import { HealthEntry } from 'src/health-entry/entities/health-entry.entity';
 
 @Injectable()
 export class WorkoutSessionService {
@@ -11,13 +12,16 @@ export class WorkoutSessionService {
     @InjectRepository(WorkoutSession)
     private readonly workoutSessionsRepo: Repository<WorkoutSession>,
     @InjectRepository(UserWorkout)
-    private readonly userWorkoutsRepo: Repository<UserWorkout>
+    private readonly userWorkoutsRepo: Repository<UserWorkout>,
+    @InjectRepository(HealthEntry)
+    private readonly healthEntriesRepo: Repository<HealthEntry>
   ) {}
 
   private toDto(workoutSession: WorkoutSession): WorkoutSessionDto {
     return {
       id: workoutSession.id,
       userWorkoutId: workoutSession.userWorkout.id,
+      healthEntryId: workoutSession.healthEntry.id,
       strengthExerciseConfigurationIds:
         workoutSession.strengthExerciseCompletions.map(
           (completion) => completion.id
@@ -38,8 +42,17 @@ export class WorkoutSessionService {
     if (!userWorkout) {
       throw new NotFoundException('User workout not found');
     }
+    const healthEntry = await this.healthEntriesRepo.findOneBy({
+      id: createWorkoutSessionDto.healthEntryId,
+    });
+    if (!healthEntry) {
+      throw new NotFoundException('Health entry not found');
+    }
     const newWorkoutSession = this.workoutSessionsRepo.create({
       userWorkout,
+      healthEntry,
+      strengthExerciseCompletions: [],
+      cardioExerciseCompletions: [],
     });
     return this.toDto(await this.workoutSessionsRepo.save(newWorkoutSession));
   }
@@ -49,6 +62,7 @@ export class WorkoutSessionService {
       await this.workoutSessionsRepo.find({
         relations: [
           'userWorkout',
+          'healthEntry',
           'strengthExerciseCompletions',
           'cardioExerciseCompletions',
         ],
@@ -70,6 +84,29 @@ export class WorkoutSessionService {
         where: { userWorkout },
         relations: [
           'userWorkout',
+          'healthEntry',
+          'strengthExerciseCompletions',
+          'cardioExerciseCompletions',
+        ],
+      })
+    ).map(this.toDto);
+  }
+
+  async findByHealthEntryId(
+    healthEntryId: string
+  ): Promise<WorkoutSessionDto[]> {
+    const healthEntry = await this.healthEntriesRepo.findOneBy({
+      id: healthEntryId,
+    });
+    if (!healthEntry) {
+      throw new NotFoundException('Health entry not found');
+    }
+    return (
+      await this.workoutSessionsRepo.find({
+        where: { healthEntry },
+        relations: [
+          'userWorkout',
+          'healthEntry',
           'strengthExerciseCompletions',
           'cardioExerciseCompletions',
         ],
@@ -82,6 +119,7 @@ export class WorkoutSessionService {
       where: { id },
       relations: [
         'userWorkout',
+        'healthEntry',
         'strengthExerciseCompletions',
         'cardioExerciseCompletions',
       ],

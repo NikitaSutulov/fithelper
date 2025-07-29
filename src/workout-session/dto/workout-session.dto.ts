@@ -12,6 +12,11 @@ export class WorkoutSessionDto {
   @IsNotEmpty()
   userWorkoutId: string;
 
+  @ApiProperty({ example: '00000000-0000-0000-0000-000000000000' })
+  @IsUUID()
+  @IsNotEmpty()
+  healthEntryId: string;
+
   @ApiProperty({
     isArray: true,
     type: String,

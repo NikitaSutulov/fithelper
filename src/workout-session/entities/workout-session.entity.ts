@@ -1,4 +1,5 @@
 import { CardioExerciseCompletion } from 'src/cardio-exercise-completion/entities/cardio-exercise-completion.entity';
+import { HealthEntry } from 'src/health-entry/entities/health-entry.entity';
 import { StrengthExerciseCompletion } from 'src/strength-exercise-completion/entities/strength-exercise-completion.entity';
 import { UserWorkout } from 'src/user-workout/entities/user-workout.entity';
 import { Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
@@ -10,6 +11,9 @@ export class WorkoutSession {
 
   @ManyToOne(() => UserWorkout)
   userWorkout: UserWorkout;
+
+  @ManyToOne(() => HealthEntry)
+  healthEntry: HealthEntry;
 
   @OneToMany(
     () => StrengthExerciseCompletion,

@@ -1,9 +1,11 @@
 import { User } from 'src/user/entities/user.entity';
+import { WorkoutSession } from 'src/workout-session/entities/workout-session.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -20,4 +22,10 @@ export class HealthEntry {
 
   @Column()
   stepsCount: number;
+
+  @OneToMany(
+    () => WorkoutSession,
+    (workoutSession) => workoutSession.healthEntry
+  )
+  workoutSessions: WorkoutSession[];
 }

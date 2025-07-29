@@ -28,6 +28,9 @@ export class HealthEntryService {
       userId: healthEntry.user.id,
       entryDate: healthEntry.entryDate,
       stepsCount: healthEntry.stepsCount,
+      workoutSessionIds: healthEntry.workoutSessions.map(
+        (session) => session.id
+      ),
     };
   }
 
@@ -40,9 +43,18 @@ export class HealthEntryService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
+    const existingHealthEntry = await this.healthEntriesRepo.findOne({
+      where: { user, entryDate: new Date().toISOString().split('T')[0] },
+    });
+    if (existingHealthEntry) {
+      throw new BadRequestException(
+        'Health entry for this user for today already exists'
+      );
+    }
     const newHealthEntry = this.healthEntriesRepo.create({
       user,
       stepsCount: createHealthEntryDto.stepsCount,
+      workoutSessions: [],
     });
     return this.toDto(await this.healthEntriesRepo.save(newHealthEntry));
   }
@@ -50,7 +62,7 @@ export class HealthEntryService {
   async findAll(): Promise<HealthEntryDto[]> {
     return (
       await this.healthEntriesRepo.find({
-        relations: ['user'],
+        relations: ['user', 'workoutSessions'],
       })
     ).map(this.toDto);
   }
@@ -65,7 +77,7 @@ export class HealthEntryService {
     return (
       await this.healthEntriesRepo.find({
         where: { user },
-        relations: ['user'],
+        relations: ['user', 'workoutSessions'],
       })
     ).map(this.toDto);
   }
@@ -73,7 +85,7 @@ export class HealthEntryService {
   async findById(id: string): Promise<HealthEntryDto | null> {
     const healthEntry = await this.healthEntriesRepo.findOne({
       where: { id },
-      relations: ['user'],
+      relations: ['user', 'workoutSessions'],
     });
     return healthEntry ? this.toDto(healthEntry) : null;
   }
@@ -84,7 +96,7 @@ export class HealthEntryService {
   ): Promise<HealthEntryDto> {
     const healthEntryToUpdate = await this.healthEntriesRepo.findOne({
       where: { id },
-      relations: ['user'],
+      relations: ['user', 'workoutSessions'],
     });
     if (!healthEntryToUpdate) {
       throw new NotFoundException('Health entry not found');

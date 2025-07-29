@@ -70,6 +70,31 @@ export class WorkoutSessionController {
     return this.workoutSessionService.findByUserWorkoutId(userWorkoutId);
   }
 
+  @Get('by-health-entry-id/:healthEntryId')
+  @ApiOperation({
+    summary: 'Finds workout sessions with specified health entry id',
+  })
+  @ApiParam({
+    name: 'healthEntryId',
+    required: true,
+    description: 'Health entry ID',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Success',
+    isArray: true,
+    type: WorkoutSessionDto,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Health entry not found',
+  })
+  async findByHealthEntryId(
+    @Param('healthEntryId', new ParseUUIDPipe()) healthEntryId: string
+  ) {
+    return this.workoutSessionService.findByUserWorkoutId(healthEntryId);
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Finds a workout session with specified id' })
   @ApiParam({ name: 'id', required: true, description: 'Workout session ID' })

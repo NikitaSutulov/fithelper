@@ -4,9 +4,12 @@ import { WorkoutSessionController } from './workout-session.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { WorkoutSession } from './entities/workout-session.entity';
 import { UserWorkout } from 'src/user-workout/entities/user-workout.entity';
+import { HealthEntry } from 'src/health-entry/entities/health-entry.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([WorkoutSession, UserWorkout])],
+  imports: [
+    TypeOrmModule.forFeature([WorkoutSession, UserWorkout, HealthEntry]),
+  ],
   controllers: [WorkoutSessionController],
   providers: [WorkoutSessionService],
 })

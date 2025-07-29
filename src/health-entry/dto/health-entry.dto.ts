@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsISO8601, IsNotEmpty, IsNumber, IsUUID, Min } from 'class-validator';
+import {
+  IsArray,
+  IsISO8601,
+  IsNotEmpty,
+  IsNumber,
+  IsUUID,
+  Min,
+} from 'class-validator';
 
 export class HealthEntryDto {
   @ApiProperty({ example: '00000000-0000-0000-0000-000000000000' })
@@ -22,4 +29,13 @@ export class HealthEntryDto {
   @Min(0)
   @IsNotEmpty()
   stepsCount: number;
+
+  @ApiProperty({
+    isArray: true,
+    type: String,
+    example: ['00000000-0000-0000-0000-000000000000'],
+  })
+  @IsArray()
+  @IsUUID('all', { each: true })
+  workoutSessionIds: string[];
 }
