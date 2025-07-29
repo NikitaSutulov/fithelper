@@ -26,12 +26,8 @@ export class WorkoutSessionController {
   })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
   @ApiResponse({
-    status: HttpStatus.FORBIDDEN,
-    description: 'Access denied: Private workout of another user',
-  })
-  @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'User or workout not found',
+    description: 'User workout not found',
   })
   create(@Body() createWorkoutSessionDto: CreateWorkoutSessionDto) {
     return this.workoutSessionService.create(createWorkoutSessionDto);

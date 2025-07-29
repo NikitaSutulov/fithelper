@@ -18,6 +18,14 @@ export class WorkoutSessionService {
     return {
       id: workoutSession.id,
       userWorkoutId: workoutSession.userWorkout.id,
+      strengthExerciseConfigurationIds:
+        workoutSession.strengthExerciseCompletions.map(
+          (completion) => completion.id
+        ),
+      cardioExerciseConfigurationIds:
+        workoutSession.cardioExerciseCompletions.map(
+          (completion) => completion.id
+        ),
     };
   }
 
@@ -38,7 +46,13 @@ export class WorkoutSessionService {
 
   async findAll(): Promise<WorkoutSessionDto[]> {
     return (
-      await this.workoutSessionsRepo.find({ relations: ['userWorkout'] })
+      await this.workoutSessionsRepo.find({
+        relations: [
+          'userWorkout',
+          'strengthExerciseCompletions',
+          'cardioExerciseCompletions',
+        ],
+      })
     ).map(this.toDto);
   }
 
@@ -48,14 +62,17 @@ export class WorkoutSessionService {
     const userWorkout = await this.userWorkoutsRepo.findOneBy({
       id: userWorkoutId,
     });
-    console.log(userWorkout);
     if (!userWorkout) {
       throw new NotFoundException('User workout not found');
     }
     return (
       await this.workoutSessionsRepo.find({
         where: { userWorkout },
-        relations: ['userWorkout'],
+        relations: [
+          'userWorkout',
+          'strengthExerciseCompletions',
+          'cardioExerciseCompletions',
+        ],
       })
     ).map(this.toDto);
   }
@@ -63,7 +80,11 @@ export class WorkoutSessionService {
   async findById(id: string): Promise<WorkoutSessionDto | null> {
     const workoutSession = await this.workoutSessionsRepo.findOne({
       where: { id },
-      relations: ['userWorkout'],
+      relations: [
+        'userWorkout',
+        'strengthExerciseCompletions',
+        'cardioExerciseCompletions',
+      ],
     });
     return workoutSession ? this.toDto(workoutSession) : null;
   }
