@@ -24,6 +24,8 @@ import { WorkoutSessionModule } from './workout-session/workout-session.module';
 import { WorkoutSession } from './workout-session/entities/workout-session.entity';
 import { StrengthExerciseCompletionModule } from './strength-exercise-completion/strength-exercise-completion.module';
 import { StrengthExerciseCompletion } from './strength-exercise-completion/entities/strength-exercise-completion.entity';
+import { CardioExerciseCompletionModule } from './cardio-exercise-completion/cardio-exercise-completion.module';
+import { CardioExerciseCompletion } from './cardio-exercise-completion/entities/cardio-exercise-completion.entity';
 
 @Module({
   imports: [
@@ -49,6 +51,7 @@ import { StrengthExerciseCompletion } from './strength-exercise-completion/entit
           UserWorkout,
           WorkoutSession,
           StrengthExerciseCompletion,
+          CardioExerciseCompletion,
         ],
         synchronize: true,
       }),
@@ -64,6 +67,7 @@ import { StrengthExerciseCompletion } from './strength-exercise-completion/entit
     UserWorkoutModule,
     WorkoutSessionModule,
     StrengthExerciseCompletionModule,
+    CardioExerciseCompletionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
