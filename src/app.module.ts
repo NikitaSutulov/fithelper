@@ -30,6 +30,8 @@ import { HealthEntryModule } from './health-entry/health-entry.module';
 import { HealthEntry } from './health-entry/entities/health-entry.entity';
 import { MeasurementModule } from './measurement/measurement.module';
 import { Measurement } from './measurement/entities/measurement.entity';
+import { WaterPortionModule } from './water-portion/water-portion.module';
+import { WaterPortion } from './water-portion/entities/water-portion.entity';
 
 @Module({
   imports: [
@@ -58,6 +60,7 @@ import { Measurement } from './measurement/entities/measurement.entity';
           CardioExerciseCompletion,
           HealthEntry,
           Measurement,
+          WaterPortion,
         ],
         synchronize: true,
       }),
@@ -76,6 +79,7 @@ import { Measurement } from './measurement/entities/measurement.entity';
     CardioExerciseCompletionModule,
     HealthEntryModule,
     MeasurementModule,
+    WaterPortionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
