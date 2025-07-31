@@ -31,6 +31,7 @@ export class HealthEntryService {
       workoutSessionIds: healthEntry.workoutSessions.map(
         (session) => session.id
       ),
+      waterPortionIds: healthEntry.waterPortions.map((portion) => portion.id),
     };
   }
 
@@ -55,6 +56,7 @@ export class HealthEntryService {
       user,
       stepsCount: createHealthEntryDto.stepsCount,
       workoutSessions: [],
+      waterPortions: [],
     });
     return this.toDto(await this.healthEntriesRepo.save(newHealthEntry));
   }
@@ -62,7 +64,7 @@ export class HealthEntryService {
   async findAll(): Promise<HealthEntryDto[]> {
     return (
       await this.healthEntriesRepo.find({
-        relations: ['user', 'workoutSessions'],
+        relations: ['user', 'workoutSessions', 'waterPortions'],
       })
     ).map(this.toDto);
   }
@@ -77,7 +79,7 @@ export class HealthEntryService {
     return (
       await this.healthEntriesRepo.find({
         where: { user },
-        relations: ['user', 'workoutSessions'],
+        relations: ['user', 'workoutSessions', 'waterPortions'],
       })
     ).map(this.toDto);
   }
@@ -85,7 +87,7 @@ export class HealthEntryService {
   async findById(id: string): Promise<HealthEntryDto | null> {
     const healthEntry = await this.healthEntriesRepo.findOne({
       where: { id },
-      relations: ['user', 'workoutSessions'],
+      relations: ['user', 'workoutSessions', 'waterPortions'],
     });
     return healthEntry ? this.toDto(healthEntry) : null;
   }
@@ -96,7 +98,7 @@ export class HealthEntryService {
   ): Promise<HealthEntryDto> {
     const healthEntryToUpdate = await this.healthEntriesRepo.findOne({
       where: { id },
-      relations: ['user', 'workoutSessions'],
+      relations: ['user', 'workoutSessions', 'waterPortions'],
     });
     if (!healthEntryToUpdate) {
       throw new NotFoundException('Health entry not found');

@@ -1,4 +1,5 @@
 import { User } from 'src/user/entities/user.entity';
+import { WaterPortion } from 'src/water-portion/entities/water-portion.entity';
 import { WorkoutSession } from 'src/workout-session/entities/workout-session.entity';
 import {
   Column,
@@ -28,4 +29,7 @@ export class HealthEntry {
     (workoutSession) => workoutSession.healthEntry
   )
   workoutSessions: WorkoutSession[];
+
+  @OneToMany(() => WaterPortion, (waterPortion) => waterPortion.healthEntry)
+  waterPortions: WaterPortion[];
 }

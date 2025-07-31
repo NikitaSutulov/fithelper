@@ -38,4 +38,13 @@ export class HealthEntryDto {
   @IsArray()
   @IsUUID('all', { each: true })
   workoutSessionIds: string[];
+
+  @ApiProperty({
+    isArray: true,
+    type: String,
+    example: ['00000000-0000-0000-0000-000000000000'],
+  })
+  @IsArray()
+  @IsUUID('all', { each: true })
+  waterPortionIds: string[];
 }
