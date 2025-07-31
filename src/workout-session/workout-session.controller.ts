@@ -92,7 +92,7 @@ export class WorkoutSessionController {
   async findByHealthEntryId(
     @Param('healthEntryId', new ParseUUIDPipe()) healthEntryId: string
   ) {
-    return this.workoutSessionService.findByUserWorkoutId(healthEntryId);
+    return this.workoutSessionService.findByHealthEntryId(healthEntryId);
   }
 
   @Get(':id')
