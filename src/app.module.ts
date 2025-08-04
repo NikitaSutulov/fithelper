@@ -32,6 +32,8 @@ import { MeasurementModule } from './measurement/measurement.module';
 import { Measurement } from './measurement/entities/measurement.entity';
 import { WaterPortionModule } from './water-portion/water-portion.module';
 import { WaterPortion } from './water-portion/entities/water-portion.entity';
+import { DishModule } from './dish/dish.module';
+import { Dish } from './dish/entities/dish.entity';
 
 @Module({
   imports: [
@@ -61,6 +63,7 @@ import { WaterPortion } from './water-portion/entities/water-portion.entity';
           HealthEntry,
           Measurement,
           WaterPortion,
+          Dish,
         ],
         synchronize: true,
       }),
@@ -80,6 +83,7 @@ import { WaterPortion } from './water-portion/entities/water-portion.entity';
     HealthEntryModule,
     MeasurementModule,
     WaterPortionModule,
+    DishModule,
   ],
   controllers: [AppController],
   providers: [AppService],
