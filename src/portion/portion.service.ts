@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Dish } from 'src/dish/entities/dish.entity';
+import { Meal } from 'src/meal/entities/meal.entity';
 import {
   PortionDto,
   CreatePortionDto,
@@ -15,13 +16,16 @@ export class PortionService {
     @InjectRepository(Portion)
     private readonly portionsRepo: Repository<Portion>,
     @InjectRepository(Dish)
-    private readonly dishesRepo: Repository<Dish>
+    private readonly dishesRepo: Repository<Dish>,
+    @InjectRepository(Meal)
+    private readonly mealsRepo: Repository<Meal>
   ) {}
 
   private toDto(portion: Portion): PortionDto {
     return {
       id: portion.id,
       dishId: portion.dish.id,
+      mealId: portion.meal.id,
       grams: portion.grams,
     };
   }
@@ -33,8 +37,15 @@ export class PortionService {
     if (!dish) {
       throw new NotFoundException('Dish not found');
     }
+    const meal = await this.mealsRepo.findOneBy({
+      id: createPortionDto.mealId,
+    });
+    if (!meal) {
+      throw new NotFoundException('Meal not found');
+    }
     const newPortion = this.portionsRepo.create({
       dish,
+      meal,
       grams: createPortionDto.grams,
     });
     return this.toDto(await this.portionsRepo.save(newPortion));
@@ -43,17 +54,30 @@ export class PortionService {
   async findAll(): Promise<PortionDto[]> {
     return (
       await this.portionsRepo.find({
-        relations: ['dish'],
+        relations: ['dish', 'meal'],
       })
     ).map(this.toDto);
   }
 
-  // TODO: findByMealId()
+  async findByMealId(mealId: string): Promise<PortionDto[]> {
+    const meal = await this.mealsRepo.findOneBy({
+      id: mealId,
+    });
+    if (!meal) {
+      throw new NotFoundException('Meal not found');
+    }
+    return (
+      await this.portionsRepo.find({
+        where: { meal },
+        relations: ['dish', 'meal'],
+      })
+    ).map(this.toDto);
+  }
 
   async findById(id: string): Promise<PortionDto | null> {
     const portion = await this.portionsRepo.findOne({
       where: { id },
-      relations: ['dish'],
+      relations: ['dish', 'meal'],
     });
     return portion ? this.toDto(portion) : null;
   }
@@ -64,7 +88,7 @@ export class PortionService {
   ): Promise<PortionDto> {
     const portionToUpdate = await this.portionsRepo.findOne({
       where: { id },
-      relations: ['dish'],
+      relations: ['dish', 'meal'],
     });
     if (!portionToUpdate) {
       throw new NotFoundException('Portion not found');

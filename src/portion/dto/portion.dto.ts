@@ -13,6 +13,11 @@ export class PortionDto {
   dishId: string;
 
   @ApiProperty({ example: '00000000-0000-0000-0000-000000000000' })
+  @IsUUID()
+  @IsNotEmpty()
+  mealId: string;
+
+  @ApiProperty({ example: 127.5 })
   @IsNumber()
   @IsNotEmpty()
   @IsPositive()

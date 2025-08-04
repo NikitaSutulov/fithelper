@@ -36,6 +36,8 @@ import { DishModule } from './dish/dish.module';
 import { Dish } from './dish/entities/dish.entity';
 import { PortionModule } from './portion/portion.module';
 import { Portion } from './portion/entities/portion.entity';
+import { MealModule } from './meal/meal.module';
+import { Meal } from './meal/entities/meal.entity';
 
 @Module({
   imports: [
@@ -67,6 +69,7 @@ import { Portion } from './portion/entities/portion.entity';
           WaterPortion,
           Dish,
           Portion,
+          Meal,
         ],
         synchronize: true,
       }),
@@ -88,6 +91,7 @@ import { Portion } from './portion/entities/portion.entity';
     WaterPortionModule,
     DishModule,
     PortionModule,
+    MealModule,
   ],
   controllers: [AppController],
   providers: [AppService],

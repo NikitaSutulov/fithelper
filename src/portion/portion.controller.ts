@@ -50,6 +50,29 @@ export class PortionController {
     return this.portionService.findAll();
   }
 
+  @Get('by-meal-id/:mealId')
+  @ApiOperation({
+    summary: 'Finds portions with specified meal id',
+  })
+  @ApiParam({
+    name: 'mealId',
+    required: true,
+    description: 'Meal ID',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Success',
+    isArray: true,
+    type: PortionDto,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Meal not found',
+  })
+  async findByMealId(@Param('mealId', new ParseUUIDPipe()) mealId: string) {
+    return this.portionService.findByMealId(mealId);
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Finds a portion with specified id' })
   @ApiParam({ name: 'id', required: true, description: 'Portion ID' })
