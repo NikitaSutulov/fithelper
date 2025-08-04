@@ -34,6 +34,8 @@ import { WaterPortionModule } from './water-portion/water-portion.module';
 import { WaterPortion } from './water-portion/entities/water-portion.entity';
 import { DishModule } from './dish/dish.module';
 import { Dish } from './dish/entities/dish.entity';
+import { PortionModule } from './portion/portion.module';
+import { Portion } from './portion/entities/portion.entity';
 
 @Module({
   imports: [
@@ -64,6 +66,7 @@ import { Dish } from './dish/entities/dish.entity';
           Measurement,
           WaterPortion,
           Dish,
+          Portion,
         ],
         synchronize: true,
       }),
@@ -84,6 +87,7 @@ import { Dish } from './dish/entities/dish.entity';
     MeasurementModule,
     WaterPortionModule,
     DishModule,
+    PortionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
