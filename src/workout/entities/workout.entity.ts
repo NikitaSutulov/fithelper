@@ -5,11 +5,13 @@ import {
   AfterUpdate,
   BeforeInsert,
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('workouts')
@@ -27,23 +29,23 @@ export class Workout {
   @Column({ name: 'is_public' })
   isPublic: boolean;
 
-  @Column({ name: 'update_date', type: 'timestamp' })
-  updateTime: string;
-
   @OneToMany(() => CardioExerciseConfiguration, (config) => config.workout)
   cardioExerciseConfigurations: CardioExerciseConfiguration[];
 
   @OneToMany(() => StrengthExerciseConfiguration, (config) => config.workout)
   strengthExerciseConfigurations: StrengthExerciseConfiguration[];
 
-  @AfterUpdate()
-  setNewUpdateTime() {
-    const updateTime = new Date();
-    this.updateTime = updateTime.toISOString();
-  }
+  @CreateDateColumn({
+    name: 'created_at',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createdAt: string;
 
-  @BeforeInsert()
-  setUpdateTime() {
-    this.setNewUpdateTime();
-  }
+  @UpdateDateColumn({
+    name: 'updated_at',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  updatedAt: string;
 }

@@ -28,6 +28,7 @@ export class MeasurementService {
       userId: measurement.user.id,
       measurementDate: measurement.measurementDate,
       weight: measurement.weight,
+      updatedAt: measurement.updatedAt,
     };
   }
 

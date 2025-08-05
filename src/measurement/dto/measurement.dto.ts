@@ -28,4 +28,9 @@ export class MeasurementDto {
   @IsPositive()
   @IsNotEmpty()
   weight: number;
+
+  @ApiProperty({ example: '2000-12-30T21:00:00.122Z' })
+  @IsISO8601()
+  @IsNotEmpty()
+  updatedAt: string;
 }

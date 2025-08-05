@@ -2,6 +2,7 @@ import { User } from 'src/user/entities/user.entity';
 import { Workout } from 'src/workout/entities/workout.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -23,4 +24,11 @@ export class UserWorkout {
 
   @Column({ name: 'is_owner' })
   isOwner: boolean;
+
+  @CreateDateColumn({
+    name: 'created_at',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createdAt: string;
 }

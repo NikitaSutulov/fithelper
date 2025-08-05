@@ -24,6 +24,8 @@ export class ExerciseSetService {
         exerciseSet.strengthExerciseConfiguration.id,
       weight: exerciseSet.weight,
       reps: exerciseSet.reps,
+      createdAt: exerciseSet.createdAt,
+      updatedAt: exerciseSet.updatedAt,
     };
   }
 

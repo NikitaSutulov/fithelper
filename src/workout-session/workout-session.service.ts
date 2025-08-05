@@ -29,6 +29,8 @@ export class WorkoutSessionService {
       cardioExerciseCompletionIds: workoutSession.cardioExerciseCompletions.map(
         (completion) => completion.id
       ),
+      createdAt: workoutSession.createdAt,
+      updatedAt: workoutSession.updatedAt,
     };
   }
 

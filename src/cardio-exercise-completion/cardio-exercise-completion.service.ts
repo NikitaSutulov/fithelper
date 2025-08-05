@@ -30,6 +30,8 @@ export class CardioExerciseCompletionService {
         cardioExerciseCompletion.cardioExerciseConfiguration.id,
       workoutSessionId: cardioExerciseCompletion.workoutSession.id,
       isCompleted: cardioExerciseCompletion.isCompleted,
+      createdAt: cardioExerciseCompletion.createdAt,
+      updatedAt: cardioExerciseCompletion.updatedAt,
     };
   }
 

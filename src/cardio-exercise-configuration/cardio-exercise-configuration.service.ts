@@ -27,6 +27,8 @@ export class CardioExerciseConfigurationService {
       exerciseId: cardioExerciseConfiguration.exercise.id,
       workoutId: cardioExerciseConfiguration.workout.id,
       time: cardioExerciseConfiguration.time,
+      createdAt: cardioExerciseConfiguration.createdAt,
+      updatedAt: cardioExerciseConfiguration.updatedAt,
     };
   }
 

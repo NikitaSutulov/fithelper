@@ -10,6 +10,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('health_entries')
@@ -21,7 +22,11 @@ export class HealthEntry {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @CreateDateColumn({ name: 'entry_date', type: 'date' })
+  @CreateDateColumn({
+    name: 'entry_date',
+    type: 'date',
+    default: () => 'CURRENT_DATE',
+  })
   entryDate: string;
 
   @Column({ name: 'steps_count' })
@@ -38,4 +43,11 @@ export class HealthEntry {
 
   @OneToMany(() => Meal, (meal) => meal.healthEntry)
   meals: Meal[];
+
+  @UpdateDateColumn({
+    name: 'updated_at',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  updatedAt: string;
 }

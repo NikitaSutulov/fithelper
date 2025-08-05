@@ -1,6 +1,7 @@
 import { Exercise } from 'src/exercise/entities/exercise.entity';
 import { ExerciseSet } from 'src/exercise-set/entities/exercise-set.entity';
 import {
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -25,4 +26,11 @@ export class StrengthExerciseConfiguration {
 
   @OneToMany(() => ExerciseSet, (set) => set.strengthExerciseConfiguration)
   sets: ExerciseSet[];
+
+  @CreateDateColumn({
+    name: 'created_at',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createdAt: string;
 }

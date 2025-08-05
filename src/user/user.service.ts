@@ -25,6 +25,8 @@ export class UserService {
       gender: user.gender,
       height: user.height,
       profilePicture: user.profilePicture,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
     };
   }
 

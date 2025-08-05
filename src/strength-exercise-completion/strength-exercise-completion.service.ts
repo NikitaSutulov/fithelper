@@ -30,6 +30,8 @@ export class StrengthExerciseCompletionService {
         strengthExerciseCompletion.strengthExerciseConfiguration.id,
       workoutSessionId: strengthExerciseCompletion.workoutSession.id,
       isCompleted: strengthExerciseCompletion.isCompleted,
+      createdAt: strengthExerciseCompletion.createdAt,
+      updatedAt: strengthExerciseCompletion.updatedAt,
     };
   }
 

@@ -23,6 +23,8 @@ export class WaterPortionService {
       id: waterPortion.id,
       healthEntryId: waterPortion.healthEntry.id,
       amount: waterPortion.amount,
+      createdAt: waterPortion.createdAt,
+      updatedAt: waterPortion.updatedAt,
     };
   }
 

@@ -2,10 +2,12 @@ import { Dish } from 'src/dish/entities/dish.entity';
 import { Meal } from 'src/meal/entities/meal.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('portions')
@@ -23,4 +25,18 @@ export class Portion {
   @ManyToOne(() => Meal, (meal) => meal.portions)
   @JoinColumn({ name: 'meal_id' })
   meal: Meal;
+
+  @CreateDateColumn({
+    name: 'created_at',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createdAt: string;
+
+  @UpdateDateColumn({
+    name: 'updated_at',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  updatedAt: string;
 }

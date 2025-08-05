@@ -29,11 +29,6 @@ export class WorkoutDto {
   @IsNotEmpty()
   isPublic: boolean;
 
-  @ApiProperty({ example: '2000-12-30T21:00:00.122Z' })
-  @IsISO8601()
-  @IsNotEmpty()
-  updateTime: string;
-
   @ApiProperty({
     isArray: true,
     type: String,
@@ -51,4 +46,14 @@ export class WorkoutDto {
   @IsArray()
   @IsUUID('all', { each: true })
   strengthExerciseConfigurationIds: string[];
+
+  @ApiProperty({ example: '2000-12-30T21:00:00.122Z' })
+  @IsISO8601()
+  @IsNotEmpty()
+  createdAt: string;
+
+  @ApiProperty({ example: '2000-12-30T21:00:00.122Z' })
+  @IsISO8601()
+  @IsNotEmpty()
+  updatedAt: string;
 }

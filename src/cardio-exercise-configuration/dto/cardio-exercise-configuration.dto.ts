@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsPositive, IsUUID } from 'class-validator';
+import {
+  IsISO8601,
+  IsNotEmpty,
+  IsNumber,
+  IsPositive,
+  IsUUID,
+} from 'class-validator';
 
 export class CardioExerciseConfigurationDto {
   @ApiProperty({ example: '00000000-0000-0000-0000-000000000000' })
@@ -21,4 +27,14 @@ export class CardioExerciseConfigurationDto {
   @IsNumber()
   @IsPositive()
   time: number;
+
+  @ApiProperty({ example: '2000-12-30T21:00:00.122Z' })
+  @IsISO8601()
+  @IsNotEmpty()
+  createdAt: string;
+
+  @ApiProperty({ example: '2000-12-30T21:00:00.122Z' })
+  @IsISO8601()
+  @IsNotEmpty()
+  updatedAt: string;
 }

@@ -20,6 +20,8 @@ export class MealService {
       name: meal.name,
       healthEntryId: meal.healthEntry.id,
       portionIds: meal.portions.map((portion) => portion.id),
+      createdAt: meal.createdAt,
+      updatedAt: meal.updatedAt,
     };
   }
 

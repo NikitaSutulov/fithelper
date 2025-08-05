@@ -23,6 +23,8 @@ export class PortionService {
       dishId: portion.dish.id,
       mealId: portion.meal.id,
       grams: portion.grams,
+      createdAt: portion.createdAt,
+      updatedAt: portion.updatedAt,
     };
   }
 

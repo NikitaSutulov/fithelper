@@ -2,10 +2,12 @@ import { StrengthExerciseConfiguration } from 'src/strength-exercise-configurati
 import { WorkoutSession } from 'src/workout-session/entities/workout-session.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('strength_exercise_completions')
@@ -23,4 +25,18 @@ export class StrengthExerciseCompletion {
 
   @Column({ name: 'is_completed' })
   isCompleted: boolean;
+
+  @CreateDateColumn({
+    name: 'created_at',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createdAt: string;
+
+  @UpdateDateColumn({
+    name: 'updated_at',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  updatedAt: string;
 }

@@ -19,12 +19,13 @@ export class WorkoutService {
       name: workout.name,
       authorId: workout.author.id,
       isPublic: workout.isPublic,
-      updateTime: workout.updateTime,
       cardioExerciseConfigurationIds: workout.cardioExerciseConfigurations.map(
         (config) => config.id
       ),
       strengthExerciseConfigurationIds:
         workout.strengthExerciseConfigurations.map((config) => config.id),
+      createdAt: workout.createdAt,
+      updatedAt: workout.updatedAt,
     };
   }
 

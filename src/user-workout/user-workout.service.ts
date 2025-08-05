@@ -26,6 +26,7 @@ export class UserWorkoutService {
       userId: userWorkout.user.id,
       workoutId: userWorkout.workout.id,
       isOwner: userWorkout.isOwner,
+      createdAt: userWorkout.createdAt,
     };
   }
 

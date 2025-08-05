@@ -1,10 +1,12 @@
 import { Muscle } from 'src/muscle/entities/muscle.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinTable,
   ManyToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('exercises')
@@ -21,4 +23,18 @@ export class Exercise {
   @ManyToMany(() => Muscle)
   @JoinTable({ name: 'exercise_muscles' })
   muscles: Muscle[];
+
+  @CreateDateColumn({
+    name: 'created_at',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createdAt: string;
+
+  @UpdateDateColumn({
+    name: 'updated_at',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  updatedAt: string;
 }
