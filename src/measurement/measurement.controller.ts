@@ -83,7 +83,7 @@ export class MeasurementController {
   @ApiParam({
     name: 'id',
     required: true,
-    description: 'measurement ID',
+    description: 'Measurement ID',
   })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -92,12 +92,12 @@ export class MeasurementController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'measurement not found',
+    description: 'Measurement not found',
   })
   async findById(@Param('id', new ParseUUIDPipe()) id: string) {
     const measurement = await this.measurementService.findById(id);
     if (!measurement) {
-      throw new NotFoundException('measurement not found');
+      throw new NotFoundException('Measurement not found');
     }
     return measurement;
   }
@@ -109,7 +109,7 @@ export class MeasurementController {
   @ApiParam({
     name: 'id',
     required: true,
-    description: 'measurement ID',
+    description: 'Measurement ID',
   })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -122,7 +122,7 @@ export class MeasurementController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'measurement not found',
+    description: 'Measurement not found',
   })
   update(
     @Param('id', new ParseUUIDPipe()) id: string,
@@ -139,7 +139,7 @@ export class MeasurementController {
   @ApiParam({
     name: 'id',
     required: true,
-    description: 'measurement ID',
+    description: 'Measurement ID',
   })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -148,7 +148,7 @@ export class MeasurementController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'measurement not found',
+    description: 'Measurement not found',
   })
   delete(@Param('id', new ParseUUIDPipe()) id: string) {
     return this.measurementService.delete(id);

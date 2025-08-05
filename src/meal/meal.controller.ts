@@ -28,7 +28,7 @@ export class MealController {
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'HealthEntry not found',
+    description: 'Health entry not found',
   })
   create(
     @Body()

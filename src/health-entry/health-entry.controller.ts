@@ -83,7 +83,7 @@ export class HealthEntryController {
   @ApiParam({
     name: 'id',
     required: true,
-    description: 'health entry ID',
+    description: 'Health entry ID',
   })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -92,7 +92,7 @@ export class HealthEntryController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'health entry not found',
+    description: 'Health entry not found',
   })
   async findById(@Param('id', new ParseUUIDPipe()) id: string) {
     const healthEntry = await this.healthEntryService.findById(id);
@@ -109,7 +109,7 @@ export class HealthEntryController {
   @ApiParam({
     name: 'id',
     required: true,
-    description: 'health entry ID',
+    description: 'Health entry ID',
   })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -122,7 +122,7 @@ export class HealthEntryController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'health entry not found',
+    description: 'Health entry not found',
   })
   update(
     @Param('id', new ParseUUIDPipe()) id: string,
@@ -139,7 +139,7 @@ export class HealthEntryController {
   @ApiParam({
     name: 'id',
     required: true,
-    description: 'health entry ID',
+    description: 'Health entry ID',
   })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -148,7 +148,7 @@ export class HealthEntryController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'health entry not found',
+    description: 'Health entry not found',
   })
   delete(@Param('id', new ParseUUIDPipe()) id: string) {
     return this.healthEntryService.delete(id);
