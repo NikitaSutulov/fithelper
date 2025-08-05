@@ -2,6 +2,7 @@ import { StrengthExerciseConfiguration } from 'src/strength-exercise-configurati
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   Relation,
@@ -13,6 +14,7 @@ export class ExerciseSet {
   id: string;
 
   @ManyToOne(() => StrengthExerciseConfiguration)
+  @JoinColumn({ name: 'strength_exercise_configuration_id' })
   strengthExerciseConfiguration: Relation<StrengthExerciseConfiguration>;
 
   @Column()

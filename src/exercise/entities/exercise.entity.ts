@@ -19,6 +19,6 @@ export class Exercise {
   description: string;
 
   @ManyToMany(() => Muscle)
-  @JoinTable()
+  @JoinTable({ name: 'exercise_muscles' })
   muscles: Muscle[];
 }

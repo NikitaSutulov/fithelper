@@ -4,6 +4,7 @@ import { Workout } from 'src/workout/entities/workout.entity';
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   Relation,
@@ -15,9 +16,11 @@ export class CardioExerciseConfiguration {
   id: string;
 
   @ManyToOne(() => Exercise)
+  @JoinColumn({ name: 'exercise_id' })
   exercise: Exercise;
 
   @ManyToOne(() => Workout)
+  @JoinColumn({ name: 'workout_id' })
   workout: Relation<Workout>;
 
   @Column()

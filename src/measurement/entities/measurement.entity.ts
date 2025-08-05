@@ -15,7 +15,7 @@ export class Measurement {
   @ManyToOne(() => User)
   user: User;
 
-  @CreateDateColumn({ type: 'date' })
+  @CreateDateColumn({ name: 'measurement_date', type: 'date' })
   measurementDate: string;
 
   @Column({ type: 'float' })

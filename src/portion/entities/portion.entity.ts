@@ -1,6 +1,12 @@
 import { Dish } from 'src/dish/entities/dish.entity';
 import { Meal } from 'src/meal/entities/meal.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('portions')
 export class Portion {
@@ -8,11 +14,13 @@ export class Portion {
   id: string;
 
   @ManyToOne(() => Dish)
+  @JoinColumn({ name: 'dish_id' })
   dish: Dish;
 
   @Column({ type: 'float' })
   grams: number;
 
   @ManyToOne(() => Meal, (meal) => meal.portions)
+  @JoinColumn({ name: 'meal_id' })
   meal: Meal;
 }

@@ -6,6 +6,7 @@ import {
   BeforeInsert,
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -20,9 +21,10 @@ export class Workout {
   name: string;
 
   @ManyToOne(() => User)
+  @JoinColumn({ name: 'author_id' })
   author: User;
 
-  @Column()
+  @Column({ name: 'is_public' })
   isPublic: boolean;
 
   @Column({ name: 'update_date', type: 'timestamp' })

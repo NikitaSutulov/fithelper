@@ -6,6 +6,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -17,12 +18,13 @@ export class HealthEntry {
   id: string;
 
   @ManyToOne(() => User)
+  @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @CreateDateColumn({ type: 'date' })
+  @CreateDateColumn({ name: 'entry_date', type: 'date' })
   entryDate: string;
 
-  @Column()
+  @Column({ name: 'steps_count' })
   stepsCount: number;
 
   @OneToMany(

@@ -1,5 +1,11 @@
 import { HealthEntry } from 'src/health-entry/entities/health-entry.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('water_portions')
 export class WaterPortion {
@@ -7,6 +13,7 @@ export class WaterPortion {
   id: string;
 
   @ManyToOne(() => HealthEntry)
+  @JoinColumn({ name: 'health_entry_id' })
   healthEntry: HealthEntry;
 
   @Column()
