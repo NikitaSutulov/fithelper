@@ -16,7 +16,7 @@ import {
   CardioExerciseCompletionDto,
   CreateCardioExerciseCompletionDto,
   UpdateCardioExerciseCompletionDto,
-} from 'src/cardio-exercise-completion/dto';
+} from './dto';
 
 @Controller('cardio-exercise-completion')
 export class CardioExerciseCompletionController {

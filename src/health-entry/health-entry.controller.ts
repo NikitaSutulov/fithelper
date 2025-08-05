@@ -16,7 +16,7 @@ import {
   HealthEntryDto,
   CreateHealthEntryDto,
   UpdateHealthEntryDto,
-} from 'src/health-entry/dto';
+} from './dto';
 
 @Controller('health-entry')
 export class HealthEntryController {

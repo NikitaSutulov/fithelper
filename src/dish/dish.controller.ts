@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { DishService } from './dish.service';
 import { ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
-import { DishDto, CreateDishDto, UpdateDishDto } from 'src/dish/dto';
+import { DishDto, CreateDishDto, UpdateDishDto } from './dto';
 
 @Controller('dish')
 export class DishController {

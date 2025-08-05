@@ -8,8 +8,8 @@ import {
   MeasurementDto,
   CreateMeasurementDto,
   UpdateMeasurementDto,
-} from 'src/measurement/dto';
-import { Measurement } from 'src/measurement/entities/measurement.entity';
+} from './dto';
+import { Measurement } from './entities/measurement.entity';
 import { User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
 

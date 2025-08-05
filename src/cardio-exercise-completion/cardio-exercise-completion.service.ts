@@ -4,8 +4,8 @@ import {
   CardioExerciseCompletionDto,
   CreateCardioExerciseCompletionDto,
   UpdateCardioExerciseCompletionDto,
-} from 'src/cardio-exercise-completion/dto';
-import { CardioExerciseCompletion } from 'src/cardio-exercise-completion/entities/cardio-exercise-completion.entity';
+} from './dto';
+import { CardioExerciseCompletion } from './entities/cardio-exercise-completion.entity';
 import { CardioExerciseConfiguration } from 'src/cardio-exercise-configuration/entities/cardio-exercise-configuration.entity';
 import { WorkoutSession } from 'src/workout-session/entities/workout-session.entity';
 import { Repository } from 'typeorm';

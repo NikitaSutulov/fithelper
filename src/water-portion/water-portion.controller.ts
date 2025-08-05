@@ -16,7 +16,7 @@ import {
   WaterPortionDto,
   CreateWaterPortionDto,
   UpdateWaterPortionDto,
-} from 'src/water-portion/dto';
+} from './dto';
 
 @Controller('water-portion')
 export class WaterPortionController {

@@ -2,12 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Dish } from 'src/dish/entities/dish.entity';
 import { Meal } from 'src/meal/entities/meal.entity';
-import {
-  PortionDto,
-  CreatePortionDto,
-  UpdatePortionDto,
-} from 'src/portion/dto';
-import { Portion } from 'src/portion/entities/portion.entity';
+import { PortionDto, CreatePortionDto, UpdatePortionDto } from './dto';
+import { Portion } from './entities/portion.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()

@@ -5,8 +5,8 @@ import {
   WaterPortionDto,
   CreateWaterPortionDto,
   UpdateWaterPortionDto,
-} from 'src/water-portion/dto';
-import { WaterPortion } from 'src/water-portion/entities/water-portion.entity';
+} from './dto';
+import { WaterPortion } from './entities/water-portion.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()

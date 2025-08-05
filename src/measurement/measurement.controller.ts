@@ -16,7 +16,7 @@ import {
   MeasurementDto,
   CreateMeasurementDto,
   UpdateMeasurementDto,
-} from 'src/measurement/dto';
+} from './dto';
 
 @Controller('measurement')
 export class MeasurementController {

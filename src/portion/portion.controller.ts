@@ -12,11 +12,7 @@ import {
 } from '@nestjs/common';
 import { PortionService } from './portion.service';
 import { ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
-import {
-  PortionDto,
-  CreatePortionDto,
-  UpdatePortionDto,
-} from 'src/portion/dto';
+import { PortionDto, CreatePortionDto, UpdatePortionDto } from './dto';
 
 @Controller('portion')
 export class PortionController {
