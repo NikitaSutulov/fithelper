@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsUUID, IsBoolean, IsArray } from 'class-validator';
+import { IsNotEmpty, IsUUID, IsArray } from 'class-validator';
 
 export class WorkoutSessionDto {
   @ApiProperty({ example: '00000000-0000-0000-0000-000000000000' })
@@ -23,7 +23,8 @@ export class WorkoutSessionDto {
     example: ['00000000-0000-0000-0000-000000000000'],
   })
   @IsArray()
-  strengthExerciseConfigurationIds: string[];
+  @IsUUID('all', { each: true })
+  strengthExerciseCompletionIds: string[];
 
   @ApiProperty({
     isArray: true,
@@ -31,5 +32,6 @@ export class WorkoutSessionDto {
     example: ['00000000-0000-0000-0000-000000000000'],
   })
   @IsArray()
-  cardioExerciseConfigurationIds: string[];
+  @IsUUID('all', { each: true })
+  cardioExerciseCompletionIds: string[];
 }

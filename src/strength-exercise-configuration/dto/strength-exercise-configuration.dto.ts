@@ -23,5 +23,6 @@ export class StrengthExerciseConfigurationDto {
     example: ['00000000-0000-0000-0000-000000000000'],
   })
   @IsArray()
+  @IsUUID('all', { each: true })
   exerciseSetIds: string[];
 }

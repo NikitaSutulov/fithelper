@@ -22,14 +22,13 @@ export class WorkoutSessionService {
       id: workoutSession.id,
       userWorkoutId: workoutSession.userWorkout.id,
       healthEntryId: workoutSession.healthEntry.id,
-      strengthExerciseConfigurationIds:
+      strengthExerciseCompletionIds:
         workoutSession.strengthExerciseCompletions.map(
           (completion) => completion.id
         ),
-      cardioExerciseConfigurationIds:
-        workoutSession.cardioExerciseCompletions.map(
-          (completion) => completion.id
-        ),
+      cardioExerciseCompletionIds: workoutSession.cardioExerciseCompletions.map(
+        (completion) => completion.id
+      ),
     };
   }
 
