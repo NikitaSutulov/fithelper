@@ -4,7 +4,7 @@ import { StrengthExerciseCompletion } from 'src/strength-exercise-completion/ent
 import { UserWorkout } from 'src/user-workout/entities/user-workout.entity';
 import { Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('workout-sessions')
+@Entity('workout_sessions')
 export class WorkoutSession {
   @PrimaryGeneratedColumn('uuid')
   id: string;
