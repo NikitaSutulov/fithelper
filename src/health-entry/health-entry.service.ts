@@ -59,6 +59,7 @@ export class HealthEntryService {
       stepsCount: createHealthEntryDto.stepsCount,
       workoutSessions: [],
       waterPortions: [],
+      meals: [],
     });
     return this.toDto(await this.healthEntriesRepo.save(newHealthEntry));
   }

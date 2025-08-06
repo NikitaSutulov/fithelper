@@ -5,6 +5,10 @@ import { Repository } from 'typeorm';
 import { CreateWorkoutSessionDto, WorkoutSessionDto } from './dto';
 import { UserWorkout } from 'src/user-workout/entities/user-workout.entity';
 import { HealthEntry } from 'src/health-entry/entities/health-entry.entity';
+import { CardioExerciseCompletion } from 'src/cardio-exercise-completion/entities/cardio-exercise-completion.entity';
+import { StrengthExerciseCompletion } from 'src/strength-exercise-completion/entities/strength-exercise-completion.entity';
+import { CardioExerciseConfiguration } from 'src/cardio-exercise-configuration/entities/cardio-exercise-configuration.entity';
+import { StrengthExerciseConfiguration } from 'src/strength-exercise-configuration/entities/strength-exercise-configuration.entity';
 
 @Injectable()
 export class WorkoutSessionService {
@@ -14,7 +18,11 @@ export class WorkoutSessionService {
     @InjectRepository(UserWorkout)
     private readonly userWorkoutsRepo: Repository<UserWorkout>,
     @InjectRepository(HealthEntry)
-    private readonly healthEntriesRepo: Repository<HealthEntry>
+    private readonly healthEntriesRepo: Repository<HealthEntry>,
+    @InjectRepository(CardioExerciseCompletion)
+    private readonly cardioExerciseCompletionsRepo: Repository<CardioExerciseCompletion>,
+    @InjectRepository(StrengthExerciseCompletion)
+    private readonly strengthExerciseCompletionsRepo: Repository<StrengthExerciseCompletion>
   ) {}
 
   private toDto(workoutSession: WorkoutSession): WorkoutSessionDto {
@@ -37,25 +45,91 @@ export class WorkoutSessionService {
   async create(
     createWorkoutSessionDto: CreateWorkoutSessionDto
   ): Promise<WorkoutSessionDto> {
-    const userWorkout = await this.userWorkoutsRepo.findOneBy({
-      id: createWorkoutSessionDto.userWorkoutId,
+    return this.workoutSessionsRepo.manager.transaction(async () => {
+      const userWorkout = await this.userWorkoutsRepo.findOne({
+        where: {
+          id: createWorkoutSessionDto.userWorkoutId,
+        },
+        relations: [
+          'workout',
+          'workout.cardioExerciseConfigurations',
+          'workout.strengthExerciseConfigurations',
+        ],
+      });
+      if (!userWorkout) {
+        throw new NotFoundException('User workout not found');
+      }
+      const healthEntry = await this.healthEntriesRepo.findOneBy({
+        id: createWorkoutSessionDto.healthEntryId,
+      });
+      if (!healthEntry) {
+        throw new NotFoundException('Health entry not found');
+      }
+      const newWorkoutSession = this.workoutSessionsRepo.create({
+        userWorkout,
+        healthEntry,
+        strengthExerciseCompletions: [],
+        cardioExerciseCompletions: [],
+      });
+      const cardioExerciseConfigurations =
+        userWorkout.workout.cardioExerciseConfigurations;
+      const strengthExerciseConfigurations =
+        userWorkout.workout.strengthExerciseConfigurations;
+      const savedWorkoutSession = await this.createCompletionsAndSave(
+        cardioExerciseConfigurations,
+        strengthExerciseConfigurations,
+        newWorkoutSession
+      );
+      return this.toDto(savedWorkoutSession);
     });
-    if (!userWorkout) {
-      throw new NotFoundException('User workout not found');
-    }
-    const healthEntry = await this.healthEntriesRepo.findOneBy({
-      id: createWorkoutSessionDto.healthEntryId,
-    });
-    if (!healthEntry) {
-      throw new NotFoundException('Health entry not found');
-    }
-    const newWorkoutSession = this.workoutSessionsRepo.create({
-      userWorkout,
-      healthEntry,
-      strengthExerciseCompletions: [],
-      cardioExerciseCompletions: [],
-    });
-    return this.toDto(await this.workoutSessionsRepo.save(newWorkoutSession));
+  }
+
+  private async createCompletionsAndSave(
+    cardioExerciseConfigurations: CardioExerciseConfiguration[],
+    strengthExerciseConfigurations: StrengthExerciseConfiguration[],
+    workoutSession: WorkoutSession
+  ): Promise<WorkoutSession> {
+    const cardioExerciseCompletions =
+      await this.createCardioExerciseCompletions(
+        cardioExerciseConfigurations,
+        workoutSession
+      );
+    const strengthExerciseCompletions =
+      await this.createStrengthExerciseCompletions(
+        strengthExerciseConfigurations,
+        workoutSession
+      );
+    workoutSession.cardioExerciseCompletions = cardioExerciseCompletions;
+    workoutSession.strengthExerciseCompletions = strengthExerciseCompletions;
+    return await this.workoutSessionsRepo.save(workoutSession);
+  }
+
+  private async createCardioExerciseCompletions(
+    cardioExerciseConfigurations: CardioExerciseConfiguration[],
+    workoutSession: WorkoutSession
+  ): Promise<CardioExerciseCompletion[]> {
+    const cardioCompletions = cardioExerciseConfigurations.map((config) =>
+      this.cardioExerciseCompletionsRepo.create({
+        cardioExerciseConfiguration: config,
+        workoutSession,
+        isCompleted: false,
+      })
+    );
+    return await this.cardioExerciseCompletionsRepo.save(cardioCompletions);
+  }
+
+  private async createStrengthExerciseCompletions(
+    strengthExerciseConfigurations: StrengthExerciseConfiguration[],
+    workoutSession: WorkoutSession
+  ): Promise<StrengthExerciseCompletion[]> {
+    const strengthCompletions = strengthExerciseConfigurations.map((config) =>
+      this.strengthExerciseCompletionsRepo.create({
+        strengthExerciseConfiguration: config,
+        workoutSession,
+        isCompleted: false,
+      })
+    );
+    return await this.strengthExerciseCompletionsRepo.save(strengthCompletions);
   }
 
   async findAll(): Promise<WorkoutSessionDto[]> {
