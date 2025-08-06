@@ -17,7 +17,7 @@ export class WorkoutService {
     return {
       id: workout.id,
       name: workout.name,
-      authorId: workout.author.id,
+      authorId: workout.author?.id ?? null,
       isPublic: workout.isPublic,
       cardioExerciseConfigurationIds: workout.cardioExerciseConfigurations.map(
         (config) => config.id

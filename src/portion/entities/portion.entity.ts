@@ -15,14 +15,14 @@ export class Portion {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Dish)
+  @ManyToOne(() => Dish, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'dish_id' })
   dish: Dish;
 
   @Column({ type: 'float' })
   grams: number;
 
-  @ManyToOne(() => Meal, (meal) => meal.portions)
+  @ManyToOne(() => Meal, (meal) => meal.portions, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'meal_id' })
   meal: Meal;
 

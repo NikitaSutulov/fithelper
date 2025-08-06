@@ -14,7 +14,7 @@ export class WaterPortion {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => HealthEntry)
+  @ManyToOne(() => HealthEntry, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'health_entry_id' })
   healthEntry: HealthEntry;
 

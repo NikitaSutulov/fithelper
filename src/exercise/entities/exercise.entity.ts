@@ -20,7 +20,7 @@ export class Exercise {
   @Column()
   description: string;
 
-  @ManyToMany(() => Muscle)
+  @ManyToMany(() => Muscle, { onDelete: 'CASCADE' })
   @JoinTable({
     name: 'exercise_muscles',
     joinColumn: { name: 'exercise_id' },

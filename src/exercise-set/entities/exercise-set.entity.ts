@@ -15,7 +15,7 @@ export class ExerciseSet {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => StrengthExerciseConfiguration)
+  @ManyToOne(() => StrengthExerciseConfiguration, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'strength_exercise_configuration_id' })
   strengthExerciseConfiguration: Relation<StrengthExerciseConfiguration>;
 

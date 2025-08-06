@@ -21,7 +21,7 @@ export class CardioExerciseConfiguration {
   @JoinColumn({ name: 'exercise_id' })
   exercise: Exercise;
 
-  @ManyToOne(() => Workout)
+  @ManyToOne(() => Workout, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'workout_id' })
   workout: Relation<Workout>;
 

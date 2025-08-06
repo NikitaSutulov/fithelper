@@ -13,7 +13,7 @@ export class Measurement {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { onDelete: 'CASCADE' })
   user: User;
 
   @CreateDateColumn({ name: 'measurement_date', type: 'date' })

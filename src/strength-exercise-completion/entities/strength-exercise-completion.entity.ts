@@ -15,11 +15,11 @@ export class StrengthExerciseCompletion {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => StrengthExerciseConfiguration)
+  @ManyToOne(() => StrengthExerciseConfiguration, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'strength_exercise_configuration_id' })
   strengthExerciseConfiguration: StrengthExerciseConfiguration;
 
-  @ManyToOne(() => WorkoutSession)
+  @ManyToOne(() => WorkoutSession, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'workout_session_id' })
   workoutSession: WorkoutSession;
 

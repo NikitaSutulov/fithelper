@@ -22,9 +22,9 @@ export class Workout {
   @Column()
   name: string;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { onDelete: 'SET NULL' })
   @JoinColumn({ name: 'author_id' })
-  author: User;
+  author: User | null;
 
   @Column({ name: 'is_public' })
   isPublic: boolean;

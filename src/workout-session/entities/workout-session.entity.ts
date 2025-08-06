@@ -17,11 +17,11 @@ export class WorkoutSession {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => UserWorkout)
+  @ManyToOne(() => UserWorkout, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_workout_id' })
   userWorkout: UserWorkout;
 
-  @ManyToOne(() => HealthEntry)
+  @ManyToOne(() => HealthEntry, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'health_entry_id' })
   healthEntry: HealthEntry;
 
