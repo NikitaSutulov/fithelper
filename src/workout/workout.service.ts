@@ -4,12 +4,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Workout } from './entities/workout.entity';
 import { Repository } from 'typeorm';
 import { UserService } from 'src/user/user.service';
+import { UserWorkout } from 'src/user-workout/entities/user-workout.entity';
 
 @Injectable()
 export class WorkoutService {
   constructor(
     @InjectRepository(Workout)
     private readonly workoutsRepo: Repository<Workout>,
+    @InjectRepository(UserWorkout)
+    private readonly userWorkoutsRepo: Repository<UserWorkout>,
     private readonly userService: UserService
   ) {}
 
@@ -30,19 +33,28 @@ export class WorkoutService {
   }
 
   async create(createWorkoutDto: CreateWorkoutDto): Promise<WorkoutDto> {
-    const author = await this.userService.findById(createWorkoutDto.authorId);
-    if (!author) {
-      throw new NotFoundException('Author not found');
-    }
-    const { name, isPublic } = createWorkoutDto;
-    const newWorkout = this.workoutsRepo.create({
-      name,
-      author,
-      isPublic,
-      cardioExerciseConfigurations: [],
-      strengthExerciseConfigurations: [],
+    return this.workoutsRepo.manager.transaction(async () => {
+      const author = await this.userService.findById(createWorkoutDto.authorId);
+      if (!author) {
+        throw new NotFoundException('Author not found');
+      }
+      const { name, isPublic } = createWorkoutDto;
+      const newWorkout = this.workoutsRepo.create({
+        name,
+        author,
+        isPublic,
+        cardioExerciseConfigurations: [],
+        strengthExerciseConfigurations: [],
+      });
+      const savedWorkout = await this.workoutsRepo.save(newWorkout);
+      const userWorkout = this.userWorkoutsRepo.create({
+        user: author,
+        workout: savedWorkout,
+        isOwner: true,
+      });
+      await this.userWorkoutsRepo.save(userWorkout);
+      return this.toDto(savedWorkout);
     });
-    return this.toDto(await this.workoutsRepo.save(newWorkout));
   }
 
   async findAll(): Promise<WorkoutDto[]> {
