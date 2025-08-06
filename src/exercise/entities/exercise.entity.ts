@@ -21,7 +21,11 @@ export class Exercise {
   description: string;
 
   @ManyToMany(() => Muscle)
-  @JoinTable({ name: 'exercise_muscles' })
+  @JoinTable({
+    name: 'exercise_muscles',
+    joinColumn: { name: 'exercise_id' },
+    inverseJoinColumn: { name: 'muscle_id' },
+  })
   muscles: Muscle[];
 
   @CreateDateColumn({
