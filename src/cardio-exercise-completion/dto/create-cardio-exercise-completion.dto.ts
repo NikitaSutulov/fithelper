@@ -1,19 +1,7 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsUUID, IsBoolean } from 'class-validator';
+import { PickType } from '@nestjs/swagger';
+import { CardioExerciseCompletionDto } from './cardio-exercise-completion.dto';
 
-export class CreateCardioExerciseCompletionDto {
-  @ApiProperty({ example: '00000000-0000-0000-0000-000000000000' })
-  @IsUUID()
-  @IsNotEmpty()
-  cardioExerciseConfigurationId: string;
-
-  @ApiProperty({ example: '00000000-0000-0000-0000-000000000000' })
-  @IsUUID()
-  @IsNotEmpty()
-  workoutSessionId: string;
-
-  @ApiProperty({ example: true })
-  @IsBoolean()
-  @IsNotEmpty()
-  isCompleted: boolean;
-}
+export class CreateCardioExerciseCompletionDto extends PickType(
+  CardioExerciseCompletionDto,
+  ['cardioExerciseConfigurationId', 'workoutSessionId', 'isCompleted'] as const
+) {}

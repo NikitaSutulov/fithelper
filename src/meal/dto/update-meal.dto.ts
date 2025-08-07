@@ -1,4 +1,4 @@
 import { PickType } from '@nestjs/swagger';
-import { CreateMealDto } from './create-meal.dto';
+import { MealDto } from './meal.dto';
 
-export class UpdateMealDto extends PickType(CreateMealDto, ['name'] as const) {}
+export class UpdateMealDto extends PickType(MealDto, ['name'] as const) {}

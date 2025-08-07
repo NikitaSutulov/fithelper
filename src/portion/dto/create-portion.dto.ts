@@ -1,4 +1,8 @@
-import { OmitType } from '@nestjs/swagger';
+import { PickType } from '@nestjs/swagger';
 import { PortionDto } from './portion.dto';
 
-export class CreatePortionDto extends OmitType(PortionDto, ['id'] as const) {}
+export class CreatePortionDto extends PickType(PortionDto, [
+  'dishId',
+  'mealId',
+  'grams',
+] as const) {}

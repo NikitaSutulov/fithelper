@@ -1,10 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsInt, IsPositive } from 'class-validator';
+import { PickType } from '@nestjs/swagger';
+import { WaterPortionDto } from './water-portion.dto';
 
-export class UpdateWaterPortionDto {
-  @ApiProperty({ example: 250 })
-  @IsInt()
-  @IsPositive()
-  @IsNotEmpty()
-  amount: number;
-}
+export class UpdateWaterPortionDto extends PickType(WaterPortionDto, [
+  'amount',
+] as const) {}

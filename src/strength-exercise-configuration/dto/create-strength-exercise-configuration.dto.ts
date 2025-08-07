@@ -1,14 +1,7 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsUUID } from 'class-validator';
+import { PickType } from '@nestjs/swagger';
+import { StrengthExerciseConfigurationDto } from './strength-exercise-configuration.dto';
 
-export class CreateStrengthExerciseConfigurationDto {
-  @ApiProperty({ example: '00000000-0000-0000-0000-000000000000' })
-  @IsUUID()
-  @IsNotEmpty()
-  exerciseId: string;
-
-  @ApiProperty({ example: '00000000-0000-0000-0000-000000000000' })
-  @IsUUID()
-  @IsNotEmpty()
-  workoutId: string;
-}
+export class CreateStrengthExerciseConfigurationDto extends PickType(
+  StrengthExerciseConfigurationDto,
+  ['exerciseId', 'workoutId'] as const
+) {}
