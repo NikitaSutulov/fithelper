@@ -16,11 +16,22 @@ export class Measurement {
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
   user: User;
 
-  @CreateDateColumn({ name: 'measurement_date', type: 'date' })
+  @Column({
+    name: 'measurement_date',
+    type: 'date',
+    default: () => 'CURRENT_DATE',
+  })
   measurementDate: string;
 
   @Column({ type: 'float' })
   weight: number;
+
+  @CreateDateColumn({
+    name: 'created_at',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createdAt: string;
 
   @UpdateDateColumn({
     name: 'updated_at',

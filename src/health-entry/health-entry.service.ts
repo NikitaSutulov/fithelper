@@ -33,6 +33,7 @@ export class HealthEntryService {
       ),
       waterPortionIds: healthEntry.waterPortions.map((portion) => portion.id),
       mealIds: healthEntry.meals.map((meal) => meal.id),
+      createdAt: healthEntry.created_at,
       updatedAt: healthEntry.updatedAt,
     };
   }

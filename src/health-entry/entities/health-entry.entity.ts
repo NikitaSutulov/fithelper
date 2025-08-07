@@ -22,7 +22,7 @@ export class HealthEntry {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @CreateDateColumn({
+  @Column({
     name: 'entry_date',
     type: 'date',
     default: () => 'CURRENT_DATE',
@@ -43,6 +43,13 @@ export class HealthEntry {
 
   @OneToMany(() => Meal, (meal) => meal.healthEntry)
   meals: Meal[];
+
+  @CreateDateColumn({
+    name: 'created_at',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  created_at: string;
 
   @UpdateDateColumn({
     name: 'updated_at',
