@@ -66,7 +66,7 @@ export class PortionService {
     }
     return (
       await this.portionsRepo.find({
-        where: { meal },
+        where: { meal: { id: meal.id } },
         relations: ['dish', 'meal'],
       })
     ).map(this.toDto);

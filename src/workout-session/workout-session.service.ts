@@ -156,7 +156,7 @@ export class WorkoutSessionService {
     }
     return (
       await this.workoutSessionsRepo.find({
-        where: { userWorkout },
+        where: { userWorkout: { id: userWorkout.id } },
         relations: [
           'userWorkout',
           'healthEntry',
@@ -178,7 +178,7 @@ export class WorkoutSessionService {
     }
     return (
       await this.workoutSessionsRepo.find({
-        where: { healthEntry },
+        where: { healthEntry: { id: healthEntry.id } },
         relations: [
           'userWorkout',
           'healthEntry',

@@ -57,7 +57,7 @@ export class MealService {
     }
     return (
       await this.mealsRepo.find({
-        where: { healthEntry },
+        where: { healthEntry: { id: healthEntry.id } },
         relations: ['healthEntry', 'portions'],
       })
     ).map(this.toDto);

@@ -73,7 +73,7 @@ export class MeasurementService {
     }
     return (
       await this.measurementsRepo.find({
-        where: { user },
+        where: { user: { id: user.id } },
         relations: ['user'],
       })
     ).map(this.toDto);

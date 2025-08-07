@@ -61,7 +61,7 @@ export class WaterPortionService {
     }
     return (
       await this.waterPortionsRepo.find({
-        where: { healthEntry },
+        where: { healthEntry: { id: healthEntry.id } },
         relations: ['healthEntry'],
       })
     ).map(this.toDto);

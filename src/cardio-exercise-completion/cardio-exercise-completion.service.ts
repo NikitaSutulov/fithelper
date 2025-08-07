@@ -81,7 +81,7 @@ export class CardioExerciseCompletionService {
     }
     return (
       await this.cardioExerciseCompletionsRepo.find({
-        where: { workoutSession },
+        where: { workoutSession: { id: workoutSession.id } },
         relations: ['cardioExerciseConfiguration', 'workoutSession'],
       })
     ).map(this.toDto);

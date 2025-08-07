@@ -81,7 +81,7 @@ export class HealthEntryService {
     }
     return (
       await this.healthEntriesRepo.find({
-        where: { user },
+        where: { user: { id: user.id } },
         relations: ['user', 'workoutSessions', 'waterPortions', 'meals'],
       })
     ).map(this.toDto);
