@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { WorkoutSession } from './entities/workout-session.entity';
-import { Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { CreateWorkoutSessionDto, WorkoutSessionDto } from './dto';
 import { UserWorkout } from 'src/user-workout/entities/user-workout.entity';
 import { HealthEntry } from 'src/health-entry/entities/health-entry.entity';
@@ -18,11 +18,7 @@ export class WorkoutSessionService {
     @InjectRepository(UserWorkout)
     private readonly userWorkoutsRepo: Repository<UserWorkout>,
     @InjectRepository(HealthEntry)
-    private readonly healthEntriesRepo: Repository<HealthEntry>,
-    @InjectRepository(CardioExerciseCompletion)
-    private readonly cardioExerciseCompletionsRepo: Repository<CardioExerciseCompletion>,
-    @InjectRepository(StrengthExerciseCompletion)
-    private readonly strengthExerciseCompletionsRepo: Repository<StrengthExerciseCompletion>
+    private readonly healthEntriesRepo: Repository<HealthEntry>
   ) {}
 
   private toDto(workoutSession: WorkoutSession): WorkoutSessionDto {
@@ -45,91 +41,99 @@ export class WorkoutSessionService {
   async create(
     createWorkoutSessionDto: CreateWorkoutSessionDto
   ): Promise<WorkoutSessionDto> {
-    return this.workoutSessionsRepo.manager.transaction(async () => {
-      const userWorkout = await this.userWorkoutsRepo.findOne({
-        where: {
-          id: createWorkoutSessionDto.userWorkoutId,
-        },
-        relations: [
-          'workout',
-          'workout.cardioExerciseConfigurations',
-          'workout.strengthExerciseConfigurations',
-        ],
-      });
-      if (!userWorkout) {
-        throw new NotFoundException('User workout not found');
+    return this.workoutSessionsRepo.manager.transaction(
+      async (entityManager) => {
+        const userWorkout = await entityManager.findOne(UserWorkout, {
+          where: {
+            id: createWorkoutSessionDto.userWorkoutId,
+          },
+          relations: [
+            'workout',
+            'workout.cardioExerciseConfigurations',
+            'workout.strengthExerciseConfigurations',
+          ],
+        });
+        if (!userWorkout) {
+          throw new NotFoundException('User workout not found');
+        }
+        const healthEntry = await entityManager.findOneBy(HealthEntry, {
+          id: createWorkoutSessionDto.healthEntryId,
+        });
+        if (!healthEntry) {
+          throw new NotFoundException('Health entry not found');
+        }
+        const newWorkoutSession = entityManager.create(WorkoutSession, {
+          userWorkout,
+          healthEntry,
+          strengthExerciseCompletions: [],
+          cardioExerciseCompletions: [],
+        });
+        const cardioExerciseConfigurations =
+          userWorkout.workout.cardioExerciseConfigurations;
+        const strengthExerciseConfigurations =
+          userWorkout.workout.strengthExerciseConfigurations;
+        const savedWorkoutSession = await this.createCompletionsAndSave(
+          entityManager,
+          cardioExerciseConfigurations,
+          strengthExerciseConfigurations,
+          newWorkoutSession
+        );
+        return this.toDto(savedWorkoutSession);
       }
-      const healthEntry = await this.healthEntriesRepo.findOneBy({
-        id: createWorkoutSessionDto.healthEntryId,
-      });
-      if (!healthEntry) {
-        throw new NotFoundException('Health entry not found');
-      }
-      const newWorkoutSession = this.workoutSessionsRepo.create({
-        userWorkout,
-        healthEntry,
-        strengthExerciseCompletions: [],
-        cardioExerciseCompletions: [],
-      });
-      const cardioExerciseConfigurations =
-        userWorkout.workout.cardioExerciseConfigurations;
-      const strengthExerciseConfigurations =
-        userWorkout.workout.strengthExerciseConfigurations;
-      const savedWorkoutSession = await this.createCompletionsAndSave(
-        cardioExerciseConfigurations,
-        strengthExerciseConfigurations,
-        newWorkoutSession
-      );
-      return this.toDto(savedWorkoutSession);
-    });
+    );
   }
 
   private async createCompletionsAndSave(
+    entityManager: EntityManager,
     cardioExerciseConfigurations: CardioExerciseConfiguration[],
     strengthExerciseConfigurations: StrengthExerciseConfiguration[],
     workoutSession: WorkoutSession
   ): Promise<WorkoutSession> {
     const cardioExerciseCompletions =
       await this.createCardioExerciseCompletions(
+        entityManager,
         cardioExerciseConfigurations,
         workoutSession
       );
     const strengthExerciseCompletions =
       await this.createStrengthExerciseCompletions(
+        entityManager,
         strengthExerciseConfigurations,
         workoutSession
       );
     workoutSession.cardioExerciseCompletions = cardioExerciseCompletions;
     workoutSession.strengthExerciseCompletions = strengthExerciseCompletions;
-    return await this.workoutSessionsRepo.save(workoutSession);
+    return await entityManager.save(workoutSession);
   }
 
   private async createCardioExerciseCompletions(
+    entityManager: EntityManager,
     cardioExerciseConfigurations: CardioExerciseConfiguration[],
     workoutSession: WorkoutSession
   ): Promise<CardioExerciseCompletion[]> {
     const cardioCompletions = cardioExerciseConfigurations.map((config) =>
-      this.cardioExerciseCompletionsRepo.create({
+      entityManager.create(CardioExerciseCompletion, {
         cardioExerciseConfiguration: config,
         workoutSession,
         isCompleted: false,
       })
     );
-    return await this.cardioExerciseCompletionsRepo.save(cardioCompletions);
+    return await entityManager.save(cardioCompletions);
   }
 
   private async createStrengthExerciseCompletions(
+    entityManager: EntityManager,
     strengthExerciseConfigurations: StrengthExerciseConfiguration[],
     workoutSession: WorkoutSession
   ): Promise<StrengthExerciseCompletion[]> {
     const strengthCompletions = strengthExerciseConfigurations.map((config) =>
-      this.strengthExerciseCompletionsRepo.create({
+      entityManager.create(StrengthExerciseCompletion, {
         strengthExerciseConfiguration: config,
         workoutSession,
         isCompleted: false,
       })
     );
-    return await this.strengthExerciseCompletionsRepo.save(strengthCompletions);
+    return await entityManager.save(strengthCompletions);
   }
 
   async findAll(): Promise<WorkoutSessionDto[]> {

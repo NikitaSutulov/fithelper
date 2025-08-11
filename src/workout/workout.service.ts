@@ -3,17 +3,14 @@ import { CreateWorkoutDto, UpdateWorkoutDto, WorkoutDto } from './dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Workout } from './entities/workout.entity';
 import { Repository } from 'typeorm';
-import { UserService } from 'src/user/user.service';
 import { UserWorkout } from 'src/user-workout/entities/user-workout.entity';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class WorkoutService {
   constructor(
     @InjectRepository(Workout)
-    private readonly workoutsRepo: Repository<Workout>,
-    @InjectRepository(UserWorkout)
-    private readonly userWorkoutsRepo: Repository<UserWorkout>,
-    private readonly userService: UserService
+    private readonly workoutsRepo: Repository<Workout>
   ) {}
 
   private toDto(workout: Workout): WorkoutDto {
@@ -33,26 +30,28 @@ export class WorkoutService {
   }
 
   async create(createWorkoutDto: CreateWorkoutDto): Promise<WorkoutDto> {
-    return this.workoutsRepo.manager.transaction(async () => {
-      const author = await this.userService.findById(createWorkoutDto.authorId);
+    return this.workoutsRepo.manager.transaction(async (entityManager) => {
+      const author = await entityManager.findOneBy(User, {
+        id: createWorkoutDto.authorId,
+      });
       if (!author) {
         throw new NotFoundException('Author not found');
       }
       const { name, isPublic } = createWorkoutDto;
-      const newWorkout = this.workoutsRepo.create({
+      const newWorkout = entityManager.create(Workout, {
         name,
         author,
         isPublic,
         cardioExerciseConfigurations: [],
         strengthExerciseConfigurations: [],
       });
-      const savedWorkout = await this.workoutsRepo.save(newWorkout);
-      const userWorkout = this.userWorkoutsRepo.create({
+      const savedWorkout = await entityManager.save(newWorkout);
+      const userWorkout = entityManager.create(UserWorkout, {
         user: author,
         workout: savedWorkout,
         isOwner: true,
       });
-      await this.userWorkoutsRepo.save(userWorkout);
+      await entityManager.save(userWorkout);
       return this.toDto(savedWorkout);
     });
   }
