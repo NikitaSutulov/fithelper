@@ -30,6 +30,29 @@ export class WorkoutController {
     return this.workoutService.create(createWorkoutDto);
   }
 
+  @Post('copy/:id')
+  @ApiOperation({
+    summary:
+      'Copies a workout with specified id making a user with specified id the author of the workout copy.',
+  })
+  @ApiParam({ name: 'id', required: true, description: 'Workout ID' })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'Success',
+    type: WorkoutDto,
+  })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Workout or author for the copy not found',
+  })
+  copy(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Body() createWorkoutDto: CreateWorkoutDto
+  ) {
+    return this.workoutService.copy(id, createWorkoutDto);
+  }
+
   @Get()
   @ApiOperation({ summary: 'Finds all workouts' })
   @ApiResponse({
