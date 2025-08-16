@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { MealService } from './meal.service';
 import { ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
-import { MealDto, CreateMealDto, UpdateMealDto } from 'src/meal/dto';
+import { MealDto, CreateMealDto, UpdateMealDto } from './dto';
 
 @Controller('meal')
 export class MealController {
@@ -28,7 +28,7 @@ export class MealController {
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'HealthEntry not found',
+    description: 'Health entry not found',
   })
   create(
     @Body()

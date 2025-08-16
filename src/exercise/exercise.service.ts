@@ -29,6 +29,8 @@ export class ExerciseService {
       name: exercise.name,
       description: exercise.description,
       muscleIds: exercise.muscles.map((muscle) => muscle.id),
+      createdAt: exercise.createdAt,
+      updatedAt: exercise.updatedAt,
     };
   }
 

@@ -1,9 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsAlpha, IsNotEmpty } from 'class-validator';
+import { PickType } from '@nestjs/swagger';
+import { MuscleDto } from './muscle.dto';
 
-export class CreateMuscleDto {
-  @ApiProperty({ example: 'Biceps' })
-  @IsNotEmpty()
-  @IsAlpha()
-  name: string;
-}
+export class CreateMuscleDto extends PickType(MuscleDto, ['name'] as const) {}

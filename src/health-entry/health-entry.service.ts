@@ -33,6 +33,8 @@ export class HealthEntryService {
       ),
       waterPortionIds: healthEntry.waterPortions.map((portion) => portion.id),
       mealIds: healthEntry.meals.map((meal) => meal.id),
+      createdAt: healthEntry.created_at,
+      updatedAt: healthEntry.updatedAt,
     };
   }
 
@@ -58,6 +60,7 @@ export class HealthEntryService {
       stepsCount: createHealthEntryDto.stepsCount,
       workoutSessions: [],
       waterPortions: [],
+      meals: [],
     });
     return this.toDto(await this.healthEntriesRepo.save(newHealthEntry));
   }
@@ -79,7 +82,7 @@ export class HealthEntryService {
     }
     return (
       await this.healthEntriesRepo.find({
-        where: { user },
+        where: { user: { id: user.id } },
         relations: ['user', 'workoutSessions', 'waterPortions', 'meals'],
       })
     ).map(this.toDto);

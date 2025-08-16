@@ -30,6 +30,8 @@ export class StrengthExerciseCompletionService {
         strengthExerciseCompletion.strengthExerciseConfiguration.id,
       workoutSessionId: strengthExerciseCompletion.workoutSession.id,
       isCompleted: strengthExerciseCompletion.isCompleted,
+      createdAt: strengthExerciseCompletion.createdAt,
+      updatedAt: strengthExerciseCompletion.updatedAt,
     };
   }
 
@@ -81,7 +83,7 @@ export class StrengthExerciseCompletionService {
     }
     return (
       await this.strengthExerciseCompletionsRepo.find({
-        where: { workoutSession },
+        where: { workoutSession: { id: workoutSession.id } },
         relations: ['strengthExerciseConfiguration', 'workoutSession'],
       })
     ).map(this.toDto);

@@ -26,6 +26,7 @@ export class UserWorkoutService {
       userId: userWorkout.user.id,
       workoutId: userWorkout.workout.id,
       isOwner: userWorkout.isOwner,
+      createdAt: userWorkout.createdAt,
     };
   }
 
@@ -77,7 +78,7 @@ export class UserWorkoutService {
     }
     return (
       await this.userWorkoutsRepo.find({
-        where: { user },
+        where: { user: { id: user.id } },
         relations: ['user', 'workout'],
       })
     ).map(this.toDto);

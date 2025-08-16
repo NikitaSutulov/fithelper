@@ -1,12 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsArray,
+  IsISO8601,
   IsNotEmpty,
   IsOptional,
   IsString,
   IsUUID,
 } from 'class-validator';
-import { MuscleDto } from 'src/muscle/dto';
 
 export class ExerciseDto {
   @ApiProperty({ example: '00000000-0000-0000-0000-000000000000' })
@@ -33,5 +33,16 @@ export class ExerciseDto {
     example: ['00000000-0000-0000-0000-000000000000'],
   })
   @IsArray()
+  @IsUUID('all', { each: true })
   muscleIds: string[];
+
+  @ApiProperty({ example: '2000-12-30T21:00:00.122Z' })
+  @IsISO8601()
+  @IsNotEmpty()
+  createdAt: string;
+
+  @ApiProperty({ example: '2000-12-30T21:00:00.122Z' })
+  @IsISO8601()
+  @IsNotEmpty()
+  updatedAt: string;
 }

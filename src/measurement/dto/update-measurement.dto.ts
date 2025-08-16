@@ -1,10 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsPositive, IsUUID } from 'class-validator';
+import { PickType } from '@nestjs/swagger';
+import { MeasurementDto } from './measurement.dto';
 
-export class UpdateMeasurementDto {
-  @ApiProperty({ example: 70.0 })
-  @IsNumber()
-  @IsPositive()
-  @IsNotEmpty()
-  weight: number;
-}
+export class UpdateMeasurementDto extends PickType(MeasurementDto, [
+  'weight',
+] as const) {}

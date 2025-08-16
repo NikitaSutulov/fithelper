@@ -1,7 +1,7 @@
-import { OmitType } from '@nestjs/swagger';
+import { PickType } from '@nestjs/swagger';
 import { MealDto } from './meal.dto';
 
-export class CreateMealDto extends OmitType(MealDto, [
-  'id',
-  'portionIds',
+export class CreateMealDto extends PickType(MealDto, [
+  'name',
+  'healthEntryId',
 ] as const) {}

@@ -1,6 +1,6 @@
 import { PickType } from '@nestjs/swagger';
-import { CreatePortionDto } from './create-portion.dto';
+import { PortionDto } from './portion.dto';
 
-export class UpdatePortionDto extends PickType(CreatePortionDto, [
+export class UpdatePortionDto extends PickType(PortionDto, [
   'grams',
 ] as const) {}

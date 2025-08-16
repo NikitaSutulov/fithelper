@@ -5,8 +5,8 @@ import {
   WaterPortionDto,
   CreateWaterPortionDto,
   UpdateWaterPortionDto,
-} from 'src/water-portion/dto';
-import { WaterPortion } from 'src/water-portion/entities/water-portion.entity';
+} from './dto';
+import { WaterPortion } from './entities/water-portion.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -23,6 +23,8 @@ export class WaterPortionService {
       id: waterPortion.id,
       healthEntryId: waterPortion.healthEntry.id,
       amount: waterPortion.amount,
+      createdAt: waterPortion.createdAt,
+      updatedAt: waterPortion.updatedAt,
     };
   }
 
@@ -59,7 +61,7 @@ export class WaterPortionService {
     }
     return (
       await this.waterPortionsRepo.find({
-        where: { healthEntry },
+        where: { healthEntry: { id: healthEntry.id } },
         relations: ['healthEntry'],
       })
     ).map(this.toDto);

@@ -8,8 +8,8 @@ import {
   MeasurementDto,
   CreateMeasurementDto,
   UpdateMeasurementDto,
-} from 'src/measurement/dto';
-import { Measurement } from 'src/measurement/entities/measurement.entity';
+} from './dto';
+import { Measurement } from './entities/measurement.entity';
 import { User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
 
@@ -28,6 +28,8 @@ export class MeasurementService {
       userId: measurement.user.id,
       measurementDate: measurement.measurementDate,
       weight: measurement.weight,
+      createdAt: measurement.createdAt,
+      updatedAt: measurement.updatedAt,
     };
   }
 
@@ -72,7 +74,7 @@ export class MeasurementService {
     }
     return (
       await this.measurementsRepo.find({
-        where: { user },
+        where: { user: { id: user.id } },
         relations: ['user'],
       })
     ).map(this.toDto);

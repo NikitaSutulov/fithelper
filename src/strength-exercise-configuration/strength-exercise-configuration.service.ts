@@ -26,6 +26,7 @@ export class StrengthExerciseConfigurationService {
       exerciseId: strengthExerciseConfiguration.exercise.id,
       workoutId: strengthExerciseConfiguration.workout.id,
       exerciseSetIds: strengthExerciseConfiguration.sets.map((set) => set.id),
+      createdAt: strengthExerciseConfiguration.createdAt,
     };
   }
 

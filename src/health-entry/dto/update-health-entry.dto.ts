@@ -1,10 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, Min } from 'class-validator';
+import { PickType } from '@nestjs/swagger';
+import { HealthEntryDto } from './health-entry.dto';
 
-export class UpdateHealthEntryDto {
-  @ApiProperty({ example: 0 })
-  @IsNumber()
-  @Min(0)
-  @IsNotEmpty()
-  stepsCount: number;
-}
+export class UpdateHealthEntryDto extends PickType(HealthEntryDto, [
+  'stepsCount',
+] as const) {}

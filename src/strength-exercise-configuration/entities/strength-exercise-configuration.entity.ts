@@ -1,7 +1,9 @@
 import { Exercise } from 'src/exercise/entities/exercise.entity';
 import { ExerciseSet } from 'src/exercise-set/entities/exercise-set.entity';
 import {
+  CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -14,12 +16,21 @@ export class StrengthExerciseConfiguration {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Exercise)
+  @ManyToOne(() => Exercise, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'exercise_id' })
   exercise: Exercise;
 
-  @ManyToOne(() => Workout)
+  @ManyToOne(() => Workout, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'workout_id' })
   workout: Relation<Workout>;
 
   @OneToMany(() => ExerciseSet, (set) => set.strengthExerciseConfiguration)
   sets: ExerciseSet[];
+
+  @CreateDateColumn({
+    name: 'created_at',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createdAt: string;
 }

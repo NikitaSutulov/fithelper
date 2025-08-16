@@ -1,9 +1,7 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsBoolean } from 'class-validator';
+import { PickType } from '@nestjs/swagger';
+import { CardioExerciseCompletionDto } from './cardio-exercise-completion.dto';
 
-export class UpdateCardioExerciseCompletionDto {
-  @ApiProperty({ example: true })
-  @IsBoolean()
-  @IsNotEmpty()
-  isCompleted: boolean;
-}
+export class UpdateCardioExerciseCompletionDto extends PickType(
+  CardioExerciseCompletionDto,
+  ['isCompleted'] as const
+) {}

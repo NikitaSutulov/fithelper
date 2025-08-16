@@ -16,7 +16,7 @@ import {
   StrengthExerciseCompletionDto,
   CreateStrengthExerciseCompletionDto,
   UpdateStrengthExerciseCompletionDto,
-} from 'src/strength-exercise-completion/dto';
+} from './dto';
 
 @Controller('strength-exercise-completion')
 export class StrengthExerciseCompletionController {

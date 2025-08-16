@@ -2,12 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Dish } from 'src/dish/entities/dish.entity';
 import { Meal } from 'src/meal/entities/meal.entity';
-import {
-  PortionDto,
-  CreatePortionDto,
-  UpdatePortionDto,
-} from 'src/portion/dto';
-import { Portion } from 'src/portion/entities/portion.entity';
+import { PortionDto, CreatePortionDto, UpdatePortionDto } from './dto';
+import { Portion } from './entities/portion.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -27,6 +23,8 @@ export class PortionService {
       dishId: portion.dish.id,
       mealId: portion.meal.id,
       grams: portion.grams,
+      createdAt: portion.createdAt,
+      updatedAt: portion.updatedAt,
     };
   }
 
@@ -68,7 +66,7 @@ export class PortionService {
     }
     return (
       await this.portionsRepo.find({
-        where: { meal },
+        where: { meal: { id: meal.id } },
         relations: ['dish', 'meal'],
       })
     ).map(this.toDto);

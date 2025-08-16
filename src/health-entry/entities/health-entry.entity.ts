@@ -6,9 +6,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('health_entries')
@@ -16,13 +18,18 @@ export class HealthEntry {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @CreateDateColumn({ type: 'date' })
+  @Column({
+    name: 'entry_date',
+    type: 'date',
+    default: () => 'CURRENT_DATE',
+  })
   entryDate: string;
 
-  @Column()
+  @Column({ name: 'steps_count' })
   stepsCount: number;
 
   @OneToMany(
@@ -36,4 +43,18 @@ export class HealthEntry {
 
   @OneToMany(() => Meal, (meal) => meal.healthEntry)
   meals: Meal[];
+
+  @CreateDateColumn({
+    name: 'created_at',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  created_at: string;
+
+  @UpdateDateColumn({
+    name: 'updated_at',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  updatedAt: string;
 }
