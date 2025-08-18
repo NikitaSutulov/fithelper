@@ -33,7 +33,7 @@ export class WorkoutSession {
 
   @OneToMany(
     () => CardioExerciseCompletion,
-    (CardioExerciseCompletion) => CardioExerciseCompletion.workoutSession
+    (cardioExerciseCompletion) => cardioExerciseCompletion.workoutSession
   )
   cardioExerciseCompletions: CardioExerciseCompletion[];
 
