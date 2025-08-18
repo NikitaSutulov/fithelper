@@ -3,12 +3,15 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   Unique,
   UpdateDateColumn,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
+import { Role } from 'src/role/entities/role.entity';
 
 @Entity('users')
 @Unique(['username'])
@@ -46,6 +49,10 @@ export class User {
   @ApiProperty({ example: null })
   @Column({ name: 'profile_picture', nullable: true })
   profilePicture?: string;
+
+  @ManyToOne(() => Role, { nullable: true })
+  @JoinColumn({ name: 'role_id' })
+  role: Role;
 
   @CreateDateColumn({
     name: 'created_at',

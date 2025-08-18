@@ -25,6 +25,7 @@ export class UserService {
       gender: user.gender,
       height: user.height,
       profilePicture: user.profilePicture,
+      role: user.role.name,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     };
@@ -41,22 +42,35 @@ export class UserService {
   }
 
   async findById(id: string): Promise<UserDto | null> {
-    const user = await this.usersRepo.findOneBy({ id });
+    const user = await this.usersRepo.findOne({
+      where: { id },
+      relations: ['role'],
+    });
     return user ? this.toDto(user) : null;
   }
 
   async findByUsername(username: string): Promise<UserDto | null> {
-    const user = await this.usersRepo.findOneBy({ username });
+    const user = await this.usersRepo.findOne({
+      where: { username },
+      relations: ['role'],
+    });
     return user ? this.toDto(user) : null;
   }
 
   async findByEmail(email: string): Promise<UserDto | null> {
-    const user = await this.usersRepo.findOneBy({ email });
+    const user = await this.usersRepo.findOne({
+      where: { email },
+      relations: ['role'],
+    });
     return user ? this.toDto(user) : null;
   }
 
   async findAll(): Promise<UserDto[]> {
-    return (await this.usersRepo.find()).map(this.toDto);
+    return (
+      await this.usersRepo.find({
+        relations: ['role'],
+      })
+    ).map(this.toDto);
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<UserDto> {

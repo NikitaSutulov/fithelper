@@ -21,6 +21,7 @@ import { WaterPortionModule } from './water-portion/water-portion.module';
 import { DishModule } from './dish/dish.module';
 import { PortionModule } from './portion/portion.module';
 import { MealModule } from './meal/meal.module';
+import { RoleModule } from './role/role.module';
 
 @Module({
   imports: [
@@ -57,6 +58,7 @@ import { MealModule } from './meal/meal.module';
     DishModule,
     PortionModule,
     MealModule,
+    RoleModule,
   ],
   controllers: [AppController],
   providers: [AppService],

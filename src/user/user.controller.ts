@@ -13,9 +13,8 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto, UpdateUserDto } from './dto';
+import { CreateUserDto, UpdateUserDto, UserDto } from './dto';
 import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
-import { User } from './entities/user.entity';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('user')
@@ -28,7 +27,7 @@ export class UserController {
     status: HttpStatus.OK,
     description: 'Success',
     isArray: true,
-    type: User,
+    type: UserDto,
   })
   findAll() {
     return this.userService.findAll();
@@ -37,7 +36,7 @@ export class UserController {
   @Get('/:id')
   @ApiOperation({ summary: 'Finds a user with specified id' })
   @ApiParam({ name: 'id', required: true, description: 'User ID' })
-  @ApiResponse({ status: HttpStatus.OK, description: 'Success', type: User })
+  @ApiResponse({ status: HttpStatus.OK, description: 'Success', type: UserDto })
   @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'User not found' })
   async findById(@Param('id', new ParseUUIDPipe()) id: string) {
     const user = await this.userService.findById(id);
@@ -52,7 +51,7 @@ export class UserController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Success',
-    type: User,
+    type: UserDto,
   })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
   create(@Body() createUserDto: CreateUserDto) {
@@ -62,7 +61,7 @@ export class UserController {
   @Patch('/:id')
   @ApiOperation({ summary: 'Updates a user with specified id' })
   @ApiParam({ name: 'id', required: true, description: 'User ID' })
-  @ApiResponse({ status: HttpStatus.OK, description: 'Success', type: User })
+  @ApiResponse({ status: HttpStatus.OK, description: 'Success', type: UserDto })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
   @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'User not found' })
   update(
@@ -75,7 +74,7 @@ export class UserController {
   @Delete('/:id')
   @ApiOperation({ summary: 'Deletes a user with specified id' })
   @ApiParam({ name: 'id', required: true, description: 'User ID' })
-  @ApiResponse({ status: HttpStatus.OK, description: 'Success', type: User })
+  @ApiResponse({ status: HttpStatus.OK, description: 'Success', type: UserDto })
   @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'User not found' })
   delete(@Param('id', new ParseUUIDPipe()) id: string) {
     return this.userService.delete(id);

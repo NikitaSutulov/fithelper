@@ -7,17 +7,19 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserWorkout } from './entities/user-workout.entity';
 import { Repository } from 'typeorm';
-import { UserService } from 'src/user/user.service';
-import { WorkoutService } from 'src/workout/workout.service';
 import { CreateUserWorkoutDto, UserWorkoutDto } from './dto';
+import { User } from 'src/user/entities/user.entity';
+import { Workout } from 'src/workout/entities/workout.entity';
 
 @Injectable()
 export class UserWorkoutService {
   constructor(
     @InjectRepository(UserWorkout)
     private readonly userWorkoutsRepo: Repository<UserWorkout>,
-    private readonly userService: UserService,
-    private readonly workoutService: WorkoutService
+    @InjectRepository(User)
+    private readonly usersRepo: Repository<User>,
+    @InjectRepository(Workout)
+    private readonly workoutsRepo: Repository<Workout>
   ) {}
 
   private toDto(userWorkout: UserWorkout): UserWorkoutDto {
@@ -33,17 +35,19 @@ export class UserWorkoutService {
   async create(
     createUserWorkoutDto: CreateUserWorkoutDto
   ): Promise<UserWorkoutDto> {
-    const user = await this.userService.findById(createUserWorkoutDto.userId);
+    const user = await this.usersRepo.findOneBy({
+      id: createUserWorkoutDto.userId,
+    });
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    const workout = await this.workoutService.findById(
-      createUserWorkoutDto.workoutId
-    );
+    const workout = await this.workoutsRepo.findOneBy({
+      id: createUserWorkoutDto.workoutId,
+    });
     if (!workout) {
       throw new NotFoundException('Workout not found');
     }
-    const isOwner = workout.authorId === user.id;
+    const isOwner = workout.author?.id === user.id;
     if (!isOwner && !workout.isPublic) {
       throw new ForbiddenException(
         'Access denied: Private workout of another user'
@@ -72,7 +76,7 @@ export class UserWorkoutService {
   }
 
   async findByUserId(userId: string): Promise<UserWorkoutDto[]> {
-    const user = await this.userService.findById(userId);
+    const user = await this.usersRepo.findOneBy({ id: userId });
     if (!user) {
       throw new NotFoundException('User not found');
     }

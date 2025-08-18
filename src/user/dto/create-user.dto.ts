@@ -3,6 +3,7 @@ import { UserDto } from './user.dto';
 
 export class CreateUserDto extends OmitType(UserDto, [
   'id',
+  'role',
   'createdAt',
   'updatedAt',
 ] as const) {}

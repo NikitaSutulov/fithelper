@@ -8,7 +8,6 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
-  IsStrongPassword,
   IsUUID,
   Min,
 } from 'class-validator';
@@ -50,6 +49,11 @@ export class UserDto {
   @IsString()
   @IsOptional()
   profilePicture?: string;
+
+  @ApiProperty({ example: 'user' })
+  @IsString()
+  @IsNotEmpty()
+  role: string;
 
   @ApiProperty({ example: '2000-12-30T21:00:00.122Z' })
   @IsISO8601()
