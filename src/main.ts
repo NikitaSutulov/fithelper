@@ -10,7 +10,14 @@ async function bootstrap() {
     .setTitle('Fithelper API')
     .setDescription('API for healthy lifestyle monitoring')
     .setVersion('1.0')
-    .addBearerAuth()
+    .addBearerAuth({
+      type: 'http',
+      scheme: 'bearer',
+      bearerFormat: 'JWT',
+      in: 'header',
+      name: 'Authorization',
+    })
+    .addSecurityRequirements('bearer')
     .build();
   const documentFactory = () =>
     SwaggerModule.createDocument(app, swaggerConfig);

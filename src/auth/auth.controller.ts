@@ -62,6 +62,7 @@ export class AuthController {
     return {
       id: req.user.sub,
       username: req.user.username,
+      role: req.user.role,
     };
   }
 }

@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { JwtService } from '@nestjs/jwt';
+import { JsonWebTokenError, JwtService, TokenExpiredError } from '@nestjs/jwt';
 import { Request } from 'express';
 
 @Injectable()
@@ -25,9 +25,11 @@ export class AuthGuard implements CanActivate {
       const payload = await this.jwtService.verifyAsync(token, {
         secret: this.configService.get('JWT_SECRET'),
       });
-
       request['user'] = payload;
-    } catch {
+    } catch (e: unknown) {
+      if (e instanceof JsonWebTokenError) {
+        throw new UnauthorizedException(e.message);
+      }
       throw new UnauthorizedException();
     }
 

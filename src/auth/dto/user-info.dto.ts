@@ -6,4 +6,7 @@ export class UserInfoDto {
 
   @ApiProperty({ example: 'username' })
   username: string;
+
+  @ApiProperty({ example: 'user' })
+  role: string;
 }

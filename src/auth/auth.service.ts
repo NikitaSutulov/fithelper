@@ -23,7 +23,10 @@ export class AuthService {
 
   async login(dto: LoginDto): Promise<LoginResponseDto> {
     const { username, password } = dto;
-    const user = await this.usersRepo.findOneBy({ username });
+    const user = await this.usersRepo.findOne({
+      where: { username },
+      relations: ['role'],
+    });
     if (!user) {
       throw new NotFoundException('User not found');
     }
@@ -31,7 +34,11 @@ export class AuthService {
     if (!isPasswordCorrect) {
       throw new BadRequestException('Wrong credentials');
     }
-    const payload = { sub: user.id, username: user.username };
+    const payload = {
+      sub: user.id,
+      username: user.username,
+      role: user.role.name,
+    };
     return {
       accessToken: await this.jwtService.signAsync(payload),
     };
