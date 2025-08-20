@@ -15,6 +15,7 @@ import { WorkoutService } from './workout.service';
 import { CreateWorkoutDto, UpdateWorkoutDto, WorkoutDto } from './dto';
 import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { AuthGuard } from 'src/auth/guards';
+import { WorkoutAccessGuard } from 'src/auth/guards';
 
 @Controller('workout')
 @UseGuards(AuthGuard)
@@ -69,6 +70,7 @@ export class WorkoutController {
   }
 
   @Get(':id')
+  @UseGuards(WorkoutAccessGuard)
   @ApiOperation({ summary: 'Finds a workout with specified id' })
   @ApiParam({ name: 'id', required: true, description: 'Workout ID' })
   @ApiResponse({
@@ -89,6 +91,7 @@ export class WorkoutController {
   }
 
   @Put(':id')
+  @UseGuards(WorkoutAccessGuard)
   @ApiOperation({ summary: 'Updates a workout with specified id' })
   @ApiParam({ name: 'id', required: true, description: 'Workout ID' })
   @ApiResponse({
@@ -109,6 +112,7 @@ export class WorkoutController {
   }
 
   @Delete(':id')
+  @UseGuards(WorkoutAccessGuard)
   @ApiOperation({ summary: 'Deletes a workout with specified id' })
   @ApiParam({ name: 'id', required: true, description: 'Workout ID' })
   @ApiResponse({

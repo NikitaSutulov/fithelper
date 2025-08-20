@@ -17,6 +17,7 @@ import {
   StrengthExerciseConfigurationDto,
 } from './dto';
 import { AuthGuard } from 'src/auth/guards';
+import { StrengthExerciseConfigurationAccessGuard } from 'src/auth/guards';
 
 @Controller('strength-exercise-configuration')
 @UseGuards(AuthGuard)
@@ -55,6 +56,7 @@ export class StrengthExerciseConfigurationController {
   }
 
   @Get(':id')
+  @UseGuards(StrengthExerciseConfigurationAccessGuard)
   @ApiOperation({
     summary: 'Finds a strength exercise configuration with specified id',
   })
@@ -82,6 +84,7 @@ export class StrengthExerciseConfigurationController {
   }
 
   @Delete(':id')
+  @UseGuards(StrengthExerciseConfigurationAccessGuard)
   @ApiOperation({
     summary: 'Deletes a strength exercise configuration with specified id',
   })

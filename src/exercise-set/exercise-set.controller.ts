@@ -18,7 +18,7 @@ import {
   UpdateExerciseSetDto,
 } from './dto';
 import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
-import { AuthGuard } from 'src/auth/guards';
+import { AuthGuard, ExerciseSetAccessGuard } from 'src/auth/guards';
 
 @Controller('exercise-set')
 @UseGuards(AuthGuard)
@@ -50,6 +50,7 @@ export class ExerciseSetController {
   }
 
   @Get(':id')
+  @UseGuards(ExerciseSetAccessGuard)
   @ApiOperation({ summary: 'Finds an exercise set with specified id' })
   @ApiParam({ name: 'id', required: true, description: 'Exercise set ID' })
   @ApiResponse({
@@ -70,6 +71,7 @@ export class ExerciseSetController {
   }
 
   @Put(':id')
+  @UseGuards(ExerciseSetAccessGuard)
   @ApiOperation({ summary: 'Updates an exercise set with specified id' })
   @ApiParam({ name: 'id', required: true, description: 'Exercise set ID' })
   @ApiResponse({
@@ -90,6 +92,7 @@ export class ExerciseSetController {
   }
 
   @Delete(':id')
+  @UseGuards(ExerciseSetAccessGuard)
   @ApiOperation({ summary: 'Deletes an exercise set with specified id' })
   @ApiParam({ name: 'id', required: true, description: 'Exercise set ID' })
   @ApiResponse({

@@ -14,7 +14,7 @@ import { CreateUserDto } from 'src/user/dto';
 import { AuthGuard } from './guards/auth.guard';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { User } from 'src/user/entities/user.entity';
-import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { RolesGuard } from 'src/auth/guards';
 import { Roles } from 'src/role/decorators/roles.decorator';
 
 @Controller('auth')
