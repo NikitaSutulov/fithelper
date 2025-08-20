@@ -9,12 +9,15 @@ import {
   NotFoundException,
   ParseUUIDPipe,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { MuscleService } from './muscle.service';
 import { CreateMuscleDto, MuscleDto, UpdateMuscleDto } from './dto';
 import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
+import { AuthGuard } from 'src/auth/guards';
 
 @Controller('muscle')
+@UseGuards(AuthGuard)
 export class MuscleController {
   constructor(private readonly muscleService: MuscleService) {}
 

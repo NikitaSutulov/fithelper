@@ -9,12 +9,15 @@ import {
   ParseUUIDPipe,
   HttpStatus,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { WorkoutService } from './workout.service';
 import { CreateWorkoutDto, UpdateWorkoutDto, WorkoutDto } from './dto';
 import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
+import { AuthGuard } from 'src/auth/guards';
 
 @Controller('workout')
+@UseGuards(AuthGuard)
 export class WorkoutController {
   constructor(private readonly workoutService: WorkoutService) {}
 

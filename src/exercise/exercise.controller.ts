@@ -9,6 +9,7 @@ import {
   NotFoundException,
   ParseUUIDPipe,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { ExerciseService } from './exercise.service';
 import {
@@ -18,8 +19,10 @@ import {
   UpdateExerciseDto,
 } from './dto';
 import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
+import { AuthGuard } from 'src/auth/guards';
 
 @Controller('exercise')
+@UseGuards(AuthGuard)
 export class ExerciseController {
   constructor(private readonly exerciseService: ExerciseService) {}
 

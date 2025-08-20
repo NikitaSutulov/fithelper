@@ -9,12 +9,15 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { DishService } from './dish.service';
 import { ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { DishDto, CreateDishDto, UpdateDishDto } from './dto';
+import { AuthGuard } from 'src/auth/guards';
 
 @Controller('dish')
+@UseGuards(AuthGuard)
 export class DishController {
   constructor(private readonly dishService: DishService) {}
 

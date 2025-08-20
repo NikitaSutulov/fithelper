@@ -9,6 +9,7 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { WaterPortionService } from './water-portion.service';
 import { ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
@@ -17,8 +18,10 @@ import {
   CreateWaterPortionDto,
   UpdateWaterPortionDto,
 } from './dto';
+import { AuthGuard } from 'src/auth/guards';
 
 @Controller('water-portion')
+@UseGuards(AuthGuard)
 export class WaterPortionController {
   constructor(private readonly waterPortionService: WaterPortionService) {}
 

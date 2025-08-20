@@ -8,6 +8,7 @@ import {
   Param,
   ParseUUIDPipe,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { StrengthExerciseConfigurationService } from './strength-exercise-configuration.service';
 import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
@@ -15,8 +16,10 @@ import {
   CreateStrengthExerciseConfigurationDto,
   StrengthExerciseConfigurationDto,
 } from './dto';
+import { AuthGuard } from 'src/auth/guards';
 
 @Controller('strength-exercise-configuration')
+@UseGuards(AuthGuard)
 export class StrengthExerciseConfigurationController {
   constructor(
     private readonly strengthExerciseConfigurationService: StrengthExerciseConfigurationService

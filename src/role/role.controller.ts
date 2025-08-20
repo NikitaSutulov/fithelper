@@ -5,12 +5,15 @@ import {
   NotFoundException,
   Param,
   ParseUUIDPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { RoleService } from './role.service';
 import { ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { RoleDto } from './dto';
+import { AuthGuard } from 'src/auth/guards';
 
 @Controller('role')
+@UseGuards(AuthGuard)
 export class RoleController {
   constructor(private readonly roleService: RoleService) {}
 

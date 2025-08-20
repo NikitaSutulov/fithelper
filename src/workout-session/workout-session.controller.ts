@@ -8,12 +8,15 @@ import {
   Param,
   ParseUUIDPipe,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { WorkoutSessionService } from './workout-session.service';
 import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { CreateWorkoutSessionDto, WorkoutSessionDto } from './dto';
+import { AuthGuard } from 'src/auth/guards';
 
 @Controller('workout-session')
+@UseGuards(AuthGuard)
 export class WorkoutSessionController {
   constructor(private readonly workoutSessionService: WorkoutSessionService) {}
 

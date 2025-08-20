@@ -9,12 +9,15 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { MealService } from './meal.service';
 import { ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { MealDto, CreateMealDto, UpdateMealDto } from './dto';
+import { AuthGuard } from 'src/auth/guards';
 
 @Controller('meal')
+@UseGuards(AuthGuard)
 export class MealController {
   constructor(private readonly mealService: MealService) {}
 

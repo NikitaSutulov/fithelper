@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { UserModule } from 'src/user/user.module';
@@ -9,6 +9,7 @@ import { User } from 'src/user/entities/user.entity';
 import { RoleModule } from 'src/role/role.module';
 import { AuthGuard } from './guards/auth.guard';
 
+@Global()
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
@@ -26,6 +27,6 @@ import { AuthGuard } from './guards/auth.guard';
   ],
   controllers: [AuthController],
   providers: [AuthService, AuthGuard],
-  exports: [AuthGuard],
+  exports: [AuthGuard, JwtModule],
 })
 export class AuthModule {}

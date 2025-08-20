@@ -9,6 +9,7 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { HealthEntryService } from './health-entry.service';
 import { ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
@@ -17,8 +18,10 @@ import {
   CreateHealthEntryDto,
   UpdateHealthEntryDto,
 } from './dto';
+import { AuthGuard } from 'src/auth/guards';
 
 @Controller('health-entry')
+@UseGuards(AuthGuard)
 export class HealthEntryController {
   constructor(private readonly healthEntryService: HealthEntryService) {}
 

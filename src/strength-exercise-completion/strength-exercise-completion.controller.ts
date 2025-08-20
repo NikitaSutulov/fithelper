@@ -9,6 +9,7 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { StrengthExerciseCompletionService } from './strength-exercise-completion.service';
 import { ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
@@ -17,8 +18,10 @@ import {
   CreateStrengthExerciseCompletionDto,
   UpdateStrengthExerciseCompletionDto,
 } from './dto';
+import { AuthGuard } from 'src/auth/guards';
 
 @Controller('strength-exercise-completion')
+@UseGuards(AuthGuard)
 export class StrengthExerciseCompletionController {
   constructor(
     private readonly strengthExerciseCompletionService: StrengthExerciseCompletionService

@@ -9,6 +9,7 @@ import {
   ParseUUIDPipe,
   HttpStatus,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { ExerciseSetService } from './exercise-set.service';
 import {
@@ -17,8 +18,10 @@ import {
   UpdateExerciseSetDto,
 } from './dto';
 import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
+import { AuthGuard } from 'src/auth/guards';
 
 @Controller('exercise-set')
+@UseGuards(AuthGuard)
 export class ExerciseSetController {
   constructor(private readonly exerciseSetService: ExerciseSetService) {}
 

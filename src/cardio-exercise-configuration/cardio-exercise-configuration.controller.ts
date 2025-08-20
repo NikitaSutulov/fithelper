@@ -9,6 +9,7 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { CardioExerciseConfigurationService } from './cardio-exercise-configuration.service';
 import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
@@ -17,8 +18,10 @@ import {
   CardioExerciseConfigurationDto,
   UpdateCardioExerciseConfigurationDto,
 } from './dto';
+import { AuthGuard } from 'src/auth/guards';
 
 @Controller('cardio-exercise-configuration')
+@UseGuards(AuthGuard)
 export class CardioExerciseConfigurationController {
   constructor(
     private readonly cardioExerciseConfigurationService: CardioExerciseConfigurationService

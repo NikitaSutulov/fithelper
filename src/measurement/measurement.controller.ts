@@ -9,6 +9,7 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { MeasurementService } from './measurement.service';
 import { ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
@@ -17,8 +18,10 @@ import {
   CreateMeasurementDto,
   UpdateMeasurementDto,
 } from './dto';
+import { AuthGuard } from 'src/auth/guards';
 
 @Controller('measurement')
+@UseGuards(AuthGuard)
 export class MeasurementController {
   constructor(private readonly measurementService: MeasurementService) {}
 

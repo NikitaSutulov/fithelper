@@ -9,12 +9,15 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { PortionService } from './portion.service';
 import { ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { PortionDto, CreatePortionDto, UpdatePortionDto } from './dto';
+import { AuthGuard } from 'src/auth/guards';
 
 @Controller('portion')
+@UseGuards(AuthGuard)
 export class PortionController {
   constructor(private readonly portionService: PortionService) {}
 
