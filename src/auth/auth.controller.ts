@@ -11,9 +11,11 @@ import {
 import { AuthService } from './auth.service';
 import { LoginDto, LoginResponseDto, UserInfoDto } from './dto';
 import { CreateUserDto } from 'src/user/dto';
-import { AuthGuard } from './auth.guard';
+import { AuthGuard } from './guards/auth.guard';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { User } from 'src/user/entities/user.entity';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Roles } from 'src/role/decorators/roles.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -57,7 +59,8 @@ export class AuthController {
     type: UserInfoDto,
   })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: 'Unauthorized' })
-  @UseGuards(AuthGuard)
+  @Roles('user')
+  @UseGuards(AuthGuard, RolesGuard)
   getMe(@Request() req) {
     return {
       id: req.user.sub,
