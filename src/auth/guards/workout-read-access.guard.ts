@@ -3,16 +3,14 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import {
-  BaseWorkoutAccessGuard,
-  WorkoutAccessInfo,
-} from './base-workout-access.guard';
+import { WorkoutAccessInfo } from './base-workout-access.guard';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Workout } from 'src/workout/entities/workout.entity';
 import { Repository } from 'typeorm';
+import { BaseWorkoutReadAccessGuard } from './base-workout-read-access.guard';
 
 @Injectable()
-export class WorkoutAccessGuard extends BaseWorkoutAccessGuard {
+export class WorkoutReadAccessGuard extends BaseWorkoutReadAccessGuard {
   constructor(
     @InjectRepository(Workout)
     private readonly workoutsRepo: Repository<Workout>
@@ -20,7 +18,9 @@ export class WorkoutAccessGuard extends BaseWorkoutAccessGuard {
     super();
   }
 
-  async getWorkoutInfo(context: ExecutionContext): Promise<WorkoutAccessInfo> {
+  override async getWorkoutInfo(
+    context: ExecutionContext
+  ): Promise<WorkoutAccessInfo> {
     const req = context.switchToHttp().getRequest();
     const workoutId = req.params.id;
     const workout = await this.workoutsRepo.findOne({

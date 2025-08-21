@@ -20,7 +20,8 @@ import {
 } from './dto';
 import {
   AuthGuard,
-  CardioExerciseConfigurationAccessGuard,
+  CardioExerciseConfigurationReadAccessGuard,
+  CardioExerciseConfigurationWriteAccessGuard,
 } from 'src/auth/guards';
 
 @Controller('cardio-exercise-configuration')
@@ -60,7 +61,7 @@ export class CardioExerciseConfigurationController {
   }
 
   @Get(':id')
-  @UseGuards(CardioExerciseConfigurationAccessGuard)
+  @UseGuards(CardioExerciseConfigurationReadAccessGuard)
   @ApiOperation({
     summary: 'Finds a cardio exercise configuration with specified id',
   })
@@ -88,7 +89,7 @@ export class CardioExerciseConfigurationController {
   }
 
   @Patch(':id')
-  @UseGuards(CardioExerciseConfigurationAccessGuard)
+  @UseGuards(CardioExerciseConfigurationWriteAccessGuard)
   @ApiOperation({
     summary: 'Updates a cardio exercise configuration with specified id',
   })
@@ -119,7 +120,7 @@ export class CardioExerciseConfigurationController {
   }
 
   @Delete(':id')
-  @UseGuards(CardioExerciseConfigurationAccessGuard)
+  @UseGuards(CardioExerciseConfigurationWriteAccessGuard)
   @ApiOperation({
     summary: 'Deletes a cardio exercise configuration with specified id',
   })

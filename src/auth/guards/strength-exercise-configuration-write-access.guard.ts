@@ -1,13 +1,11 @@
 import { ExecutionContext, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import {
-  BaseWorkoutAccessGuard,
-  WorkoutAccessInfo,
-} from './base-workout-access.guard';
+import { WorkoutAccessInfo } from './base-workout-access.guard';
 import { StrengthExerciseConfiguration } from 'src/strength-exercise-configuration/entities/strength-exercise-configuration.entity';
+import { BaseWorkoutWriteAccessGuard } from './base-workout-write-access.guard';
 
-export class StrengthExerciseConfigurationAccessGuard extends BaseWorkoutAccessGuard {
+export class StrengthExerciseConfigurationWriteAccessGuard extends BaseWorkoutWriteAccessGuard {
   constructor(
     @InjectRepository(StrengthExerciseConfiguration)
     private readonly strengthExerciseConfigurationsRepo: Repository<StrengthExerciseConfiguration>
@@ -15,7 +13,9 @@ export class StrengthExerciseConfigurationAccessGuard extends BaseWorkoutAccessG
     super();
   }
 
-  async getWorkoutInfo(context: ExecutionContext): Promise<WorkoutAccessInfo> {
+  override async getWorkoutInfo(
+    context: ExecutionContext
+  ): Promise<WorkoutAccessInfo> {
     const req = context.switchToHttp().getRequest();
     const strengthExerciseConfigurationId = req.params.id;
     const strengthExerciseConfiguration =

@@ -14,6 +14,11 @@ export abstract class BaseWorkoutAccessGuard implements CanActivate {
     context: ExecutionContext
   ): Promise<WorkoutAccessInfo>;
 
+  abstract isWorkoutAvailable(
+    userId: string,
+    workoutInfo: WorkoutAccessInfo
+  ): boolean;
+
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest();
     const userRole = req.user?.role;
@@ -25,7 +30,7 @@ export abstract class BaseWorkoutAccessGuard implements CanActivate {
     if (!workoutInfo) {
       throw new NotFoundException('Workout not found');
     }
-    if (workoutInfo.authorId === userId || workoutInfo.isPublic) {
+    if (this.isWorkoutAvailable(userId, workoutInfo)) {
       return true;
     }
     throw new ForbiddenException('Access denied');

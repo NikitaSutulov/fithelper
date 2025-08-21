@@ -1,13 +1,11 @@
 import { ExecutionContext, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import {
-  BaseWorkoutAccessGuard,
-  WorkoutAccessInfo,
-} from './base-workout-access.guard';
+import { WorkoutAccessInfo } from './base-workout-access.guard';
 import { CardioExerciseConfiguration } from 'src/cardio-exercise-configuration/entities/cardio-exercise-configuration.entity';
+import { BaseWorkoutWriteAccessGuard } from './base-workout-write-access.guard';
 
-export class CardioExerciseConfigurationAccessGuard extends BaseWorkoutAccessGuard {
+export class CardioExerciseConfigurationWriteAccessGuard extends BaseWorkoutWriteAccessGuard {
   constructor(
     @InjectRepository(CardioExerciseConfiguration)
     private readonly cardioExerciseConfigurationsRepo: Repository<CardioExerciseConfiguration>
