@@ -14,7 +14,7 @@ import {
 import { MealService } from './meal.service';
 import { ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { MealDto, CreateMealDto, UpdateMealDto } from './dto';
-import { AuthGuard } from 'src/auth/guards';
+import { AuthGuard, MealAccessGuard } from 'src/auth/guards';
 
 @Controller('meal')
 @UseGuards(AuthGuard)
@@ -78,6 +78,7 @@ export class MealController {
   }
 
   @Get(':id')
+  @UseGuards(MealAccessGuard)
   @ApiOperation({
     summary: 'Finds a meal with specified id',
   })
@@ -104,6 +105,7 @@ export class MealController {
   }
 
   @Patch(':id')
+  @UseGuards(MealAccessGuard)
   @ApiOperation({
     summary: 'Updates a meal with specified id',
   })
@@ -134,6 +136,7 @@ export class MealController {
   }
 
   @Delete(':id')
+  @UseGuards(MealAccessGuard)
   @ApiOperation({
     summary: 'Deletes a meal with specified id',
   })

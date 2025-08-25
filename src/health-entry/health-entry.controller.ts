@@ -18,7 +18,7 @@ import {
   CreateHealthEntryDto,
   UpdateHealthEntryDto,
 } from './dto';
-import { AuthGuard } from 'src/auth/guards';
+import { AuthGuard, HealthEntryAccessGuard } from 'src/auth/guards';
 
 @Controller('health-entry')
 @UseGuards(AuthGuard)
@@ -80,6 +80,7 @@ export class HealthEntryController {
   }
 
   @Get(':id')
+  @UseGuards(HealthEntryAccessGuard)
   @ApiOperation({
     summary: 'Finds a health entry with specified id',
   })
@@ -106,6 +107,7 @@ export class HealthEntryController {
   }
 
   @Patch(':id')
+  @UseGuards(HealthEntryAccessGuard)
   @ApiOperation({
     summary: 'Updates a health entry with specified id',
   })
@@ -136,6 +138,7 @@ export class HealthEntryController {
   }
 
   @Delete(':id')
+  @UseGuards(HealthEntryAccessGuard)
   @ApiOperation({
     summary: 'Deletes a health entry with specified id',
   })

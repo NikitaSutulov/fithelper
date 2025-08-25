@@ -12,3 +12,7 @@ export * from './user-workout-access.guard';
 export * from './workout-session-access.guard';
 export * from './strength-exercise-completion-access.guard';
 export * from './cardio-exercise-completion-access.guard';
+export * from './health-entry-access.guard';
+export * from './meal-access.guard';
+export * from './portion-access.guard';
+export * from './water-portion-access.guard';

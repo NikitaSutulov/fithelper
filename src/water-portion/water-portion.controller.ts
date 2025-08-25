@@ -18,7 +18,7 @@ import {
   CreateWaterPortionDto,
   UpdateWaterPortionDto,
 } from './dto';
-import { AuthGuard } from 'src/auth/guards';
+import { AuthGuard, WaterPortionAccessGuard } from 'src/auth/guards';
 
 @Controller('water-portion')
 @UseGuards(AuthGuard)
@@ -79,6 +79,7 @@ export class WaterPortionController {
   }
 
   @Get(':id')
+  @UseGuards(WaterPortionAccessGuard)
   @ApiOperation({ summary: 'Finds a water portion with specified id' })
   @ApiParam({ name: 'id', required: true, description: 'Water portion ID' })
   @ApiResponse({
@@ -99,6 +100,7 @@ export class WaterPortionController {
   }
 
   @Patch(':id')
+  @UseGuards(WaterPortionAccessGuard)
   @ApiOperation({
     summary: 'Updates a water portion with specified id',
   })
@@ -125,6 +127,7 @@ export class WaterPortionController {
   }
 
   @Delete(':id')
+  @UseGuards(WaterPortionAccessGuard)
   @ApiOperation({ summary: 'Deletes a water portion with specified id' })
   @ApiParam({ name: 'id', required: true, description: 'Water portion ID' })
   @ApiResponse({

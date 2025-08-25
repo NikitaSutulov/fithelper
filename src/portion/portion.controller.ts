@@ -14,7 +14,7 @@ import {
 import { PortionService } from './portion.service';
 import { ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { PortionDto, CreatePortionDto, UpdatePortionDto } from './dto';
-import { AuthGuard } from 'src/auth/guards';
+import { AuthGuard, PortionAccessGuard } from 'src/auth/guards';
 
 @Controller('portion')
 @UseGuards(AuthGuard)
@@ -73,6 +73,7 @@ export class PortionController {
   }
 
   @Get(':id')
+  @UseGuards(PortionAccessGuard)
   @ApiOperation({ summary: 'Finds a portion with specified id' })
   @ApiParam({ name: 'id', required: true, description: 'Portion ID' })
   @ApiResponse({
@@ -93,6 +94,7 @@ export class PortionController {
   }
 
   @Patch(':id')
+  @UseGuards(PortionAccessGuard)
   @ApiOperation({
     summary: 'Updates a portion with specified id',
   })
@@ -119,6 +121,7 @@ export class PortionController {
   }
 
   @Delete(':id')
+  @UseGuards(PortionAccessGuard)
   @ApiOperation({ summary: 'Deletes a portion with specified id' })
   @ApiParam({ name: 'id', required: true, description: 'Portion ID' })
   @ApiResponse({
