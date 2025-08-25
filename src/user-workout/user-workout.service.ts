@@ -27,7 +27,6 @@ export class UserWorkoutService {
       id: userWorkout.id,
       userId: userWorkout.user.id,
       workoutId: userWorkout.workout.id,
-      isOwner: userWorkout.isOwner,
       createdAt: userWorkout.createdAt,
     };
   }
@@ -64,7 +63,6 @@ export class UserWorkoutService {
     const newUserWorkout = this.userWorkoutsRepo.create({
       user,
       workout,
-      isOwner,
     });
     return this.toDto(await this.userWorkoutsRepo.save(newUserWorkout));
   }

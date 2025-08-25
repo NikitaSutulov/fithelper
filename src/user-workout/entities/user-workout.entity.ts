@@ -22,9 +22,6 @@ export class UserWorkout {
   @JoinColumn({ name: 'workout_id' })
   workout: Workout;
 
-  @Column({ name: 'is_owner' })
-  isOwner: boolean;
-
   @CreateDateColumn({
     name: 'created_at',
     type: 'timestamp',

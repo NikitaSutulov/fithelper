@@ -52,7 +52,6 @@ export class WorkoutService {
       const userWorkout = entityManager.create(UserWorkout, {
         user: author,
         workout: savedWorkout,
-        isOwner: true,
       });
       await entityManager.save(userWorkout);
       return this.toDto(savedWorkout);
@@ -127,7 +126,6 @@ export class WorkoutService {
     const userWorkout = entityManager.create(UserWorkout, {
       user: copyAuthor,
       workout: savedWorkoutCopy,
-      isOwner: true,
     });
     await entityManager.save(userWorkout);
     return savedWorkoutCopy;

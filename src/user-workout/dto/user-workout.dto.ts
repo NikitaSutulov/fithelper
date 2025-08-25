@@ -17,11 +17,6 @@ export class UserWorkoutDto {
   @IsNotEmpty()
   workoutId: string;
 
-  @ApiProperty({ example: true })
-  @IsBoolean()
-  @IsNotEmpty()
-  isOwner: boolean;
-
   @ApiProperty({ example: '2000-12-30T21:00:00.122Z' })
   @IsISO8601()
   @IsNotEmpty()
