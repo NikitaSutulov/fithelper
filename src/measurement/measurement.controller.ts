@@ -18,7 +18,7 @@ import {
   CreateMeasurementDto,
   UpdateMeasurementDto,
 } from './dto';
-import { AuthGuard } from 'src/auth/guards';
+import { AuthGuard, MeasurementAccessGuard } from 'src/auth/guards';
 
 @Controller('measurement')
 @UseGuards(AuthGuard)
@@ -80,6 +80,7 @@ export class MeasurementController {
   }
 
   @Get(':id')
+  @UseGuards(MeasurementAccessGuard)
   @ApiOperation({
     summary: 'Finds a measurement with specified id',
   })
@@ -106,6 +107,7 @@ export class MeasurementController {
   }
 
   @Patch(':id')
+  @UseGuards(MeasurementAccessGuard)
   @ApiOperation({
     summary: 'Updates a measurement with specified id',
   })
@@ -136,6 +138,7 @@ export class MeasurementController {
   }
 
   @Delete(':id')
+  @UseGuards(MeasurementAccessGuard)
   @ApiOperation({
     summary: 'Deletes a measurement with specified id',
   })

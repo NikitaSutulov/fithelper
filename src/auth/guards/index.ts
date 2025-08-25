@@ -16,3 +16,4 @@ export * from './health-entry-access.guard';
 export * from './meal-access.guard';
 export * from './portion-access.guard';
 export * from './water-portion-access.guard';
+export * from './measurement-access.guard';
