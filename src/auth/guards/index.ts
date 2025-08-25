@@ -8,3 +8,7 @@ export * from './cardio-exercise-configuration-read-access.guard';
 export * from './cardio-exercise-configuration-write-access.guard';
 export * from './exercise-set-read-access.guard';
 export * from './exercise-set-write-access.guard';
+export * from './user-workout-access.guard';
+export * from './workout-session-access.guard';
+export * from './strength-exercise-completion-access.guard';
+export * from './cardio-exercise-completion-access.guard';

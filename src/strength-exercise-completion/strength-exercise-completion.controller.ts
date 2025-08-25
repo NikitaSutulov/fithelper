@@ -18,7 +18,10 @@ import {
   CreateStrengthExerciseCompletionDto,
   UpdateStrengthExerciseCompletionDto,
 } from './dto';
-import { AuthGuard } from 'src/auth/guards';
+import {
+  AuthGuard,
+  StrengthExerciseCompletionAccessGuard,
+} from 'src/auth/guards';
 
 @Controller('strength-exercise-completion')
 @UseGuards(AuthGuard)
@@ -89,6 +92,7 @@ export class StrengthExerciseCompletionController {
   }
 
   @Get(':id')
+  @UseGuards(StrengthExerciseCompletionAccessGuard)
   @ApiOperation({
     summary: 'Finds a strength exercise completion with specified id',
   })
@@ -116,6 +120,7 @@ export class StrengthExerciseCompletionController {
   }
 
   @Patch(':id')
+  @UseGuards(StrengthExerciseCompletionAccessGuard)
   @ApiOperation({
     summary: 'Updates a strength exercise completion with specified id',
   })
@@ -145,6 +150,7 @@ export class StrengthExerciseCompletionController {
   }
 
   @Delete(':id')
+  @UseGuards(StrengthExerciseCompletionAccessGuard)
   @ApiOperation({
     summary: 'Deletes a strength exercise completion with specified id',
   })

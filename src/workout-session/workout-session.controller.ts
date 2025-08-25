@@ -13,7 +13,7 @@ import {
 import { WorkoutSessionService } from './workout-session.service';
 import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { CreateWorkoutSessionDto, WorkoutSessionDto } from './dto';
-import { AuthGuard } from 'src/auth/guards';
+import { AuthGuard, WorkoutSessionAccessGuard } from 'src/auth/guards';
 
 @Controller('workout-session')
 @UseGuards(AuthGuard)
@@ -99,6 +99,7 @@ export class WorkoutSessionController {
   }
 
   @Get(':id')
+  @UseGuards(WorkoutSessionAccessGuard)
   @ApiOperation({ summary: 'Finds a workout session with specified id' })
   @ApiParam({ name: 'id', required: true, description: 'Workout session ID' })
   @ApiResponse({
@@ -119,6 +120,7 @@ export class WorkoutSessionController {
   }
 
   @Delete(':id')
+  @UseGuards(WorkoutSessionAccessGuard)
   @ApiOperation({ summary: 'Deletes a workout session with specified id' })
   @ApiParam({ name: 'id', required: true, description: 'Workout session ID' })
   @ApiResponse({
